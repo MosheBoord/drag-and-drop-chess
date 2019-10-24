@@ -1,0 +1,67 @@
+{
+  "name": "my-app",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "chess.js": "github:jhlywa/chess.js",
+    "react": "^16.10.2",
+    "react-dom": "^16.10.2",
+    "react-scripts": "3.2.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "env": {
+      "browser": true,
+      "es6": true,
+      "node": true
+    },
+    "extends": [
+      "eslint:recommended",
+      "plugin:react/recommended"
+    ],
+    "parser": "babel-eslint",
+    "rules": {
+      "react/prop-types": 0,
+      "semi": [
+        "warn",
+        "always"
+      ],
+      "linebreak-style": "off",
+      "quotes": [
+        "warn",
+        "double"
+      ],
+      "space-before-function-paren": [
+        "warn",
+        {
+          "anonymous": "never",
+          "named": "never",
+          "asyncArrow": "always"
+        }
+      ],
+      "array-callback-return": [
+        "error",
+        {
+          "allowImplicit": true
+        }
+      ]
+    }
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
