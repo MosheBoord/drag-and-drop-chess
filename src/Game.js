@@ -11,7 +11,6 @@ let boardState = chess.board();
 let observer = null;
 
 // This function generates a random move and plays it.
-// This should be renamed to make random move.
 export function makeRandomMove() {
     if (!chess.game_over()) {
         const moves = chess.moves();
@@ -38,7 +37,7 @@ function emitChange() {
     observer(boardState);
 }
 
-// sets observer
+// This function sets observer.
 export function observe(o) {
     if (observer) {
         throw new Error("Multiple observers not implemented.");

@@ -4,14 +4,47 @@ import React from "react";
 // const dragAndDropManager = new dragAndDropManager();
 const dragAndDropManager = {
     draggedItem: null,
+    draggedSurface: null,
+    dropSurface: null,
     draggableItems: [],
     dragSurfaces: [],
     dropSurfaces: [],
+};
+
+const DNDContext = React.createContext(dragAndDropManager);
+
+export class DragAndDropProvider extends React.Component {
+    constructor() {
+        super();
+        // this.dragAndDropManager = dragAndDropManager;
+        this.state = {
+            draggedItem: dragAndDropManager.draggedItem,
+            draggedSurface: dragAndDropManager.draggedSurface,
+            dropSurface: dragAndDropManager.dropSurface,
+        };
+    }
+
+    refreshState() {
+        this.setState({
+            draggedItem: dragAndDropManager.draggedItem,
+            draggedSurface: dragAndDropManager.draggedSurface,
+            dropSurface: dragAndDropManager.dropSurface,
+        });
+    }
+
+    render() {
+        return (
+            <DNDContext.Provider>
+                {this.props.children}
+            </DNDContext.Provider>
+        );
+    }
 }
 
 class DraggableItem {
-    constructor(type = "") {
+    constructor(type = "", item = {}) {
         this.type = type;
+        this.item = item;
         this.el = null;
         this.pos1 = 0;
         this.pos2 = 0;
@@ -29,7 +62,7 @@ class DraggableItem {
 
             for (let i = 0; i < dragAndDropManager.draggableItems.length; i++) {
                 if (dragAndDropManager.draggableItems[i].el === el) {
-                    return
+                    return;
                 }
             }
 
@@ -39,8 +72,15 @@ class DraggableItem {
     }
 
     dragMouseDown(e) {
+        console.log("mouse down");
+        // console.log("element styles", this.el.style);
         e = e || window.event;
         e.preventDefault();
+        // get the element starting position
+        // this.startingTopPosition = this.el.offsetTop;
+        // this.startingLeftPosition = this.el.offsetLeft;
+        // get intitial style for reverting on cancel drag
+        this.initialStyle = this.el.style;
         // get the mouse cursor position at startup:
         this.pos3 = e.clientX;
         this.pos4 = e.clientY;
@@ -61,8 +101,12 @@ class DraggableItem {
         this.pos3 = e.clientX;
         this.pos4 = e.clientY;
         // set the element's new position:
+        console.log("prev pos top", this.el.style.top);
         this.el.style.top = (this.el.offsetTop - this.pos2) + "px";
+        console.log("new pos top", this.el.style.top);
         this.el.style.left = (this.el.offsetLeft - this.pos1) + "px";
+
+        // console.log("top", this.el.style.top);
     }
 
     closeDragElement() {
@@ -70,19 +114,40 @@ class DraggableItem {
         document.onmouseup = null;
         document.onmousemove = null;
 
+        // get last el position
+        // this.transitionTopToStartingPosition = (this.el.offsetTop - this.startingTopPosition) / 50;
+        // this.transitionLeftToStartingPosition = (this.el.offsetLeft - this.startingLeftPosition) / 50;
+
         // element = null;
         dragAndDropManager.draggedItem = null;
         this.el.style.pointerEvents = "";
+        this.el.style = this.initialStyle;
+        // console.log("initial style", this.initialStyle);
+        // this.el.style.top = this.startingTopPosition;
+        // this.el.style.left = this.startingLeftPosition;
+
+
+        // let times = 0;
+        // setInterval(() => {
+        //     // console.log("interval started");
+        //     if (times < 50) {
+        //         // console.log("interval going");
+        //         times++;
+        //         // console.log("this.el.style.top", this.el.style.top, "this.transitionTopToStartingPosition", this.transitionTopToStartingPosition);
+        //         this.el.style.top = this.el.offsetTop - this.transitionTopToStartingPosition + "px";
+        //         this.el.style.left = this.el.offsetLeft - this.transitionLeftToStartingPosition + "px";
+        //         // console.log("top", this.el.style.top);
+        //         // console.log("current transition changes: ", this.transitionTopToStartingPosition, this.transitionLeftToStartingPosition);
+        //         // this.el.style.top = Math.floor(this.el.style.top - this.transitionTopToStartingPosition) + "px";
+        //         // this.el.style.left = Math.floor(this.el.style.top - this.transitionLeftToStartingPosition) + "px";
+        //         // this.el.style.top -= this.startingTopPosition;
+        //         // this.el.style.left -= this.startingLeftPosition;
+        //     }
+        // }, 10);
     }
 
     dragElement() {
 
-    }
-}
-
-export class DragAndDropProvider extends React.Component {
-    render() {
-        return this.props.children;
     }
 }
 
@@ -152,6 +217,11 @@ function dragSurface(elmnt) {
         });
     }
 }
+
+
+
+
+
 
 
 // function dragElement(elmnt) {
