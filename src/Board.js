@@ -1,6 +1,7 @@
 import React from "react";
 import ChessPiece from "./ChessPiece";
 import BoardSquare from "./BoardSquare";
+import { DragAndDropProvider } from "./DragNDrop";
 
 function renderSquare(i, boardState) {
     const x = i % 8;
@@ -18,10 +19,6 @@ export default class Board extends React.Component {
     constructor(props) {
         super(props);
         const squares = [];
-        for (let i = 0; i < 64; i++) {
-            const square = renderSquare(i, this.props.boardState);
-            squares.push(square);
-        }
         this.state = {
             squares
         };
@@ -38,17 +35,21 @@ export default class Board extends React.Component {
     }
 
     render() {
-        return <div
-            style={{
-                width: "100%",
-                height: "100%",
-                display: "flex",
-                flexWrap: "wrap",
-                border: "1px solid gray",
-                margin: "5px"
-            }}
-        >
-            {this.renderSquares()}
-        </div>;
+        return (
+            <DragAndDropProvider>
+                <div
+                    style={{
+                        width: "100%",
+                        height: "100%",
+                        display: "flex",
+                        flexWrap: "wrap",
+                        border: "1px solid gray",
+                        margin: "5px"
+                    }}
+                >
+                    {this.renderSquares()}
+                </div>
+            </DragAndDropProvider>
+        );
     }
 }

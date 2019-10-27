@@ -9,9 +9,9 @@ function ChessPiece(props) {
 
     let color;
     if (props.piece.color === "w") {
-        color = "red";
+        // color = "red";
     } else {
-        color = "yellow";
+        // color = "yellow";
     }
 
     let piece;

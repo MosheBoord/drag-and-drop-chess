@@ -3,7 +3,7 @@ import * as serviceWorker from "./serviceWorker";
 import React from "react";
 import ReactDOM from "react-dom";
 import Board from "./Board";
-import { observe, makeMove } from "./Game";
+import { observe, makeRandomMove } from "./Game";
 
 const root = document.getElementById("root");
 
@@ -12,8 +12,10 @@ observe(boardState => {
 });
 
 setInterval(() => {
-    makeMove();
+    makeRandomMove();
 }, 750);
+
+// makeMove();
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
