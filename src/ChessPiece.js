@@ -1,5 +1,5 @@
 import React from "react";
-import { makeDraggable } from "./DragNDrop";
+import { makeDraggable, Draggable } from "./DragNDrop";
 import Wrapper from "./Wrapper";
 
 function ChessPiece(props) {
@@ -39,20 +39,23 @@ function ChessPiece(props) {
     }
 
     return (
-        <div
-            style={{
-                fontSize: 25,
-                fontWeight: "bold",
-                cursor: "move",
-                color,
-            }}
-        >
-            {piece}
-        </div>
+        <Draggable>
+            <div
+                style={{
+                    fontSize: 25,
+                    fontWeight: "bold",
+                    cursor: "move",
+                    color,
+                }}
+            >
+                {piece}
+            </div>
+        </Draggable>
     );
 }
 
-const wrapper = new Wrapper(ChessPiece);
-const wrappedChessPiece = wrapper.wrapWith(makeDraggable);
+// const wrapper = new Wrapper(ChessPiece);
+// const wrappedChessPiece = wrapper.wrapWith(makeDraggable);
 
-export default wrappedChessPiece;
+// export default wrappedChessPiece;
+export default ChessPiece;
