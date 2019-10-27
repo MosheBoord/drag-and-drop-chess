@@ -3,7 +3,7 @@ import { makeDragSurface, DragSurface } from "./DragNDrop";
 import Wrapper from "./Wrapper";
 
 function Square({ black, children }) {
-    const fill = black ? "black" : "white";
+    const fill = black ? "green" : "beige";
     const stroke = black ? "white" : "black";
 
     return (
