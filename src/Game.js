@@ -35,7 +35,6 @@ export function makeMove(fromSquare, toSquare) {
     const prevSquare = convertToChessNotation(fromSquare);
     const newSquare = convertToChessNotation(toSquare);
     chess.move({ from: prevSquare, to: newSquare, promotion: "q" });
-    console.log(chess.moves());
     boardState = chess.board();
     emitChange();
 }
