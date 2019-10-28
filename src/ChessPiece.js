@@ -1,6 +1,9 @@
-import React from "react";
-import { makeDraggable, Draggable } from "./DragNDrop";
-// import what from "../public/chessImages/"
+import React, { useEffect } from "react";
+import { ItemTypes } from "./Constants";
+import { useDrag } from "react-dnd";
+import { getEmptyImage } from "react-dnd-html5-backend";
+// import CustomDragLayer from "./CustomDragLayer";
+
 import BlackPawn from "./chessImages/bP.png";
 import BlackRook from "./chessImages/bR.png";
 import BlackKnight from "./chessImages/bN.png";
@@ -15,73 +18,78 @@ import WhiteQueen from "./chessImages/wQ.png";
 import WhiteKing from "./chessImages/wK.png";
 
 function ChessPiece(props) {
-    if (props.piece === null) {
-        return null;
-    }
 
     let piece;
     if (props.piece.color === "w") {
         switch (props.piece.type) {
             case "p":
-                // piece = <img src={img} />;
-                piece = <img src={WhitePawn} width="50" height="50" />;
+                piece = <img src={WhitePawn} width="50" height="50" alt="white pawn" />;
                 break;
             case "r":
-                piece = <img src={WhiteRook} width="50" height="50" />;
+                piece = <img src={WhiteRook} width="50" height="50" alt="white rook" />;
                 break;
             case "n":
-                piece = <img src={WhiteKnight} width="50" height="50" />;
+                piece = <img src={WhiteKnight} width="50" height="50" alt="white knight" />;
                 break;
             case "b":
-                piece = <img src={WhiteBishop} width="50" height="50" />;
+                piece = <img src={WhiteBishop} width="50" height="50" alt="white bishop" />;
                 break;
             case "q":
-                piece = <img src={WhiteQueen} width="50" height="50" />;
+                piece = <img src={WhiteQueen} width="50" height="50" alt="white queen" />;
                 break;
             case "k":
-                piece = <img src={WhiteKing} width="50" height="50" />;
+                piece = <img src={WhiteKing} width="50" height="50" alt="white king" />;
                 break;
             default:
-                return null;
+                piece = null;
         }
     } else {
         switch (props.piece.type) {
             case "p":
-                // piece = <img src={img} />;
-                piece = <img src={BlackPawn} width="50" height="50" />;
+                piece = <img src={BlackPawn} width="50" height="50" alt="black pawn" />;
                 break;
             case "r":
-                piece = <img src={BlackRook} width="50" height="50" />;
+                piece = <img src={BlackRook} width="50" height="50" alt="black rook" />;
                 break;
             case "n":
-                piece = <img src={BlackKnight} width="50" height="50" />;
+                piece = <img src={BlackKnight} width="50" height="50" alt="black knight" />;
                 break;
             case "b":
-                piece = <img src={BlackBishop} width="50" height="50" />;
+                piece = <img src={BlackBishop} width="50" height="50" alt="black bishop" />;
                 break;
             case "q":
-                piece = <img src={BlackQueen} width="50" height="50" />;
+                piece = <img src={BlackQueen} width="50" height="50" alt="black queen" />;
                 break;
             case "k":
-                piece = <img src={BlackKing} width="50" height="50" />;
+                piece = <img src={BlackKing} width="50" height="50" alt="black king" />;
                 break;
             default:
-                return null;
+                piece = null;
         }
     }
 
+    const [{ isDragging }, drag, preview] = useDrag({
+        item: { type: ItemTypes.CHESS_PIECE, coordinates: props.coordinates },
+        collect: monitor => ({
+            isDragging: !!monitor.isDragging(),
+        }),
+    });
+
+    // useEffect(() => {
+    //     preview(getEmptyImage(), { captureDraggingState: true });
+    // }, []);
+
     return (
-        <Draggable>
-            <div
-                style={{
-                    fontSize: 25,
-                    fontWeight: "bold",
-                    cursor: "move",
-                }}
-            >
-                {piece}
-            </div>
-        </Draggable>
+        <div
+            ref={drag}
+            style={{
+                fontSize: 25,
+                fontWeight: "bold",
+                cursor: "move",
+            }}
+        >
+            {piece}
+        </div>
     );
 }
 

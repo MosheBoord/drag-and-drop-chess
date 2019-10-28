@@ -23,11 +23,61 @@ export function makeRandomMove() {
     }
 }
 
-// This function works but I have not looked into what the paramater is to constitute a move.
-export function makeMove(move) {
-    chess.move(move);
+// This function checks if a move is legal. (Still needs to be done)
+
+export function isLegalMove() {
+    // console.log("move is legal");
+    return true;
+}
+
+// This function makes a move.
+export function makeMove(fromSquare, toSquare) {
+    const prevSquare = convertToChessNotation(fromSquare);
+    const newSquare = convertToChessNotation(toSquare);
+    chess.move({ from: prevSquare, to: newSquare, promotion: "q" });
+    console.log(chess.moves());
     boardState = chess.board();
     emitChange();
+}
+
+// This is a helper function that simply converts an x, y coordinates to a square in chess notation.
+function convertToChessNotation(coordinates) {
+    let alphabeticCharacter;
+    switch (coordinates[0]) {
+        case 0: {
+            alphabeticCharacter = "a";
+            break;
+        }
+        case 1: {
+            alphabeticCharacter = "b";
+            break;
+        }
+        case 2: {
+            alphabeticCharacter = "c";
+            break;
+        }
+        case 3: {
+            alphabeticCharacter = "d";
+            break;
+        }
+        case 4: {
+            alphabeticCharacter = "e";
+            break;
+        }
+        case 5: {
+            alphabeticCharacter = "f";
+            break;
+        }
+        case 6: {
+            alphabeticCharacter = "g";
+            break;
+        }
+        case 7: {
+            alphabeticCharacter = "h";
+            break;
+        }
+    }
+    return alphabeticCharacter + (8 - coordinates[1]);
 }
 
 
