@@ -1,29 +1,32 @@
 import React from "react";
-import { makeDragSurface } from "./DragNDrop";
+import { makeDragSurface, DragSurface } from "./DragNDrop";
 import Wrapper from "./Wrapper";
 
 function Square({ black, children }) {
-    const fill = black ? "black" : "white";
+    const fill = black ? "green" : "beige";
     const stroke = black ? "white" : "black";
 
     return (
-        <div
-            style={{
-                backgroundColor: fill,
-                color: stroke,
-                width: "100%",
-                height: "100%",
-            }}
-        >
-            <div>
-                {children}
-            </div>
+        <DragSurface >
+            <div
+                style={{
+                    backgroundColor: fill,
+                    color: stroke,
+                    width: "100%",
+                    height: "100%",
+                }}
+            >
+                <div>
+                    {children}
+                </div>
 
-        </div >
+            </div >
+        </DragSurface>
     );
 }
 
-const wrapper = new Wrapper(Square);
-const wrappedSquare = wrapper.wrapWith(makeDragSurface);
+// const wrapper = new Wrapper(Square);
+// const wrappedSquare = wrapper.wrapWith(makeDragSurface);
 
-export default wrappedSquare;
+// export default wrappedSquare;
+export default Square;

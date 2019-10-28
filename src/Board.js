@@ -1,15 +1,17 @@
 import React from "react";
 import ChessPiece from "./ChessPiece";
 import BoardSquare from "./BoardSquare";
-import { DragAndDropProvider } from "./DragNDrop";
+import { DndProvider } from "react-dnd";
+import HTML5Backend from "react-dnd-html5-backend";
 
 function renderSquare(i, boardState) {
     const x = i % 8;
     const y = Math.floor(i / 8);
+    const piece = boardState[y][x];
     return (
         <div key={i} style={{ width: "12.5%", height: "12.5%" }}>
             <BoardSquare x={x} y={y} >
-                <ChessPiece piece={boardState[y][x]} />
+                {piece ? <ChessPiece piece={piece} coordinates={[x, y]} /> : null}
             </BoardSquare>
         </div>
     );
@@ -36,7 +38,7 @@ export default class Board extends React.Component {
 
     render() {
         return (
-            <DragAndDropProvider>
+            <DndProvider backend={HTML5Backend}>
                 <div
                     style={{
                         width: "100%",
@@ -49,7 +51,7 @@ export default class Board extends React.Component {
                 >
                     {this.renderSquares()}
                 </div>
-            </DragAndDropProvider>
+            </DndProvider>
         );
     }
 }

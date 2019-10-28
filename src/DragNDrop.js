@@ -4,14 +4,47 @@ import React from "react";
 // const dragAndDropManager = new dragAndDropManager();
 const dragAndDropManager = {
     draggedItem: null,
+    draggedSurface: null,
+    dropSurface: null,
     draggableItems: [],
     dragSurfaces: [],
     dropSurfaces: [],
+};
+
+const DNDContext = React.createContext(dragAndDropManager);
+
+export class DragAndDropProvider extends React.Component {
+    constructor() {
+        super();
+        // this.dragAndDropManager = dragAndDropManager;
+        this.state = {
+            draggedItem: dragAndDropManager.draggedItem,
+            draggedSurface: dragAndDropManager.draggedSurface,
+            dropSurface: dragAndDropManager.dropSurface,
+        };
+    }
+
+    refreshState() {
+        this.setState({
+            draggedItem: dragAndDropManager.draggedItem,
+            draggedSurface: dragAndDropManager.draggedSurface,
+            dropSurface: dragAndDropManager.dropSurface,
+        });
+    }
+
+    render() {
+        return (
+            <DNDContext.Provider>
+                {this.props.children}
+            </DNDContext.Provider>
+        );
+    }
 }
 
 class DraggableItem {
-    constructor(type = "") {
+    constructor(type = "", item = {}) {
         this.type = type;
+        this.item = item;
         this.el = null;
         this.pos1 = 0;
         this.pos2 = 0;
@@ -29,7 +62,7 @@ class DraggableItem {
 
             for (let i = 0; i < dragAndDropManager.draggableItems.length; i++) {
                 if (dragAndDropManager.draggableItems[i].el === el) {
-                    return
+                    return;
                 }
             }
 
@@ -41,14 +74,21 @@ class DraggableItem {
     dragMouseDown(e) {
         e = e || window.event;
         e.preventDefault();
+        // get the element starting position
+        this.startingTopPosition = this.el.offsetTop;
+        this.startingLeftPosition = this.el.offsetLeft;
+        // get intitial color for reverting on cancel drag
+        this.color = this.el.style.color;
         // get the mouse cursor position at startup:
         this.pos3 = e.clientX;
         this.pos4 = e.clientY;
         document.onmouseup = this.closeDragElement;
         // call a function whenever the cursor moves:
         document.onmousemove = this.elementDrag;
+        // insure that the dragged element is ignore for pointer (mouse) events to allow events to pass
+        // through to elements beneath
         this.el.style.pointerEvents = "none";
-        // element = el;
+        // set the global dragged element to current dragged element
         dragAndDropManager.draggedItem = this;
     }
 
@@ -70,9 +110,39 @@ class DraggableItem {
         document.onmouseup = null;
         document.onmousemove = null;
 
-        // element = null;
+        // this feature is not ready yet
+
+        // get last element position
+        // this.transitionTopToStartingPosition = (this.el.offsetTop - this.startingTopPosition) / 50;
+        // this.transitionLeftToStartingPosition = (this.el.offsetLeft - this.startingLeftPosition) / 50;
+
         dragAndDropManager.draggedItem = null;
         this.el.style.pointerEvents = "";
+
+        // resets element as a result of canceled drag (as of now every drag is considered to be cancelled)
+        this.el.style.top = this.startingTopPosition;
+        this.el.style.left = this.startingLeftPosition;
+        this.el.style.color = this.color;
+
+        // this feature is not ready yet
+
+        // let times = 0;
+        // setInterval(() => {
+        //     // console.log("interval started");
+        //     if (times < 50) {
+        //         // console.log("interval going");
+        //         times++;
+        //         // console.log("this.el.style.top", this.el.style.top, "this.transitionTopToStartingPosition", this.transitionTopToStartingPosition);
+        //         this.el.style.top = this.el.offsetTop - this.transitionTopToStartingPosition + "px";
+        //         this.el.style.left = this.el.offsetLeft - this.transitionLeftToStartingPosition + "px";
+        //         // console.log("top", this.el.style.top);
+        //         // console.log("current transition changes: ", this.transitionTopToStartingPosition, this.transitionLeftToStartingPosition);
+        //         // this.el.style.top = Math.floor(this.el.style.top - this.transitionTopToStartingPosition) + "px";
+        //         // this.el.style.left = Math.floor(this.el.style.top - this.transitionLeftToStartingPosition) + "px";
+        //         // this.el.style.top -= this.startingTopPosition;
+        //         // this.el.style.left -= this.startingLeftPosition;
+        //     }
+        // }, 10);
     }
 
     dragElement() {
@@ -80,13 +150,9 @@ class DraggableItem {
     }
 }
 
-export class DragAndDropProvider extends React.Component {
-    render() {
-        return this.props.children;
-    }
-}
-
-export function useDrag() {
+export function useDrag(thisArg) {
+    console.log(thisArg);
+    // thisArg.setState({ ...thisArg.state });
     const dragItem = new DraggableItem();
     // dragAndDropManager.draggableItems.push(dragItem);
     return dragItem.setRef;
@@ -100,41 +166,71 @@ export function useDropSurface() {
 
 }
 
-
-
-export function makeDraggable(WrappedComponent) {
-    return class extends React.Component {
-        render() {
-            const refFunc = useDrag();
-            return (
-                <div
-                    ref={refFunc}
-                    style={{
-                        position: "absolute",
-                        zIndex: 9999,
-                    }}
-                >
-                    <WrappedComponent {...this.props} />
-                </div >
-            );
-        }
-    };
+export class Draggable extends React.Component {
+    constructor() {
+        super();
+        this.a = 5;
+    }
+    render() {
+        const refFunc = useDrag(this);
+        return (
+            <div
+                ref={refFunc}
+                style={{
+                    position: "absolute",
+                    zIndex: 9999,
+                }}
+            >
+                {this.props.children}
+            </div >
+        );
+    }
 }
 
-export function makeDragSurface(WrappedComponent) {
-    return class extends React.Component {
-        render() {
-            return (
-                <div
-                    className={this.props.className}
-                    ref={dragSurface}
-                >
-                    <WrappedComponent className={WrappedComponent.className} {...this.props} />
-                </div >
-            );
-        }
-    };
+// trying to get rid of old way of doing it
+
+// export function makeDraggable(WrappedComponent) {
+//     return class extends React.Component {
+//         render() {
+//             const refFunc = useDrag();
+//             return (
+//                 <div
+//                     ref={refFunc}
+//                     style={{
+//                         position: "absolute",
+//                         zIndex: 9999,
+//                     }}
+//                 >
+//                     <WrappedComponent {...this.props} />
+//                 </div >
+//             );
+//         }
+//     };
+// }
+
+export class DragSurface extends React.Component {
+    render() {
+        return (
+            <div
+                className={this.props.className}
+                ref={dragSurface}
+            >
+                {this.props.children}
+            </div >
+        );
+    }
 }
+
+// trying to get rid of old way of doing it
+
+
+// export function makeDragSurface(WrappedComponent) {
+//     return class extends React.Component {
+//         render() {
+
+//         }
+//     };
+// }
 
 
 // let element;
@@ -152,6 +248,11 @@ function dragSurface(elmnt) {
         });
     }
 }
+
+
+
+
+
 
 
 // function dragElement(elmnt) {
