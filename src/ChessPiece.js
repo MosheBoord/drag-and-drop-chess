@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { ItemTypes } from "./Constants";
 import { useDrag } from "react-dnd";
-import { getEmptyImage } from "react-dnd-html5-backend";
+// import { getEmptyImage } from "react-dnd-html5-backend";
 // import CustomDragLayer from "./CustomDragLayer";
 
 import BlackPawn from "./chessImages/bP.png";
@@ -18,55 +18,67 @@ import WhiteQueen from "./chessImages/wQ.png";
 import WhiteKing from "./chessImages/wK.png";
 
 function ChessPiece(props) {
+    let src;
+    let alt;
 
-    let piece;
     if (props.piece.color === "w") {
         switch (props.piece.type) {
             case "p":
-                piece = <img src={WhitePawn} width="50" height="50" alt="white pawn" />;
+                src = WhitePawn;
+                alt = "white pawn";
                 break;
             case "r":
-                piece = <img src={WhiteRook} width="50" height="50" alt="white rook" />;
+                src = WhiteRook;
+                alt = "white rook";
                 break;
             case "n":
-                piece = <img src={WhiteKnight} width="50" height="50" alt="white knight" />;
+                src = WhiteKnight;
+                alt = "white knight";
                 break;
             case "b":
-                piece = <img src={WhiteBishop} width="50" height="50" alt="white bishop" />;
+                src = WhiteBishop;
+                alt = "white bishop";
                 break;
             case "q":
-                piece = <img src={WhiteQueen} width="50" height="50" alt="white queen" />;
+                src = WhiteQueen;
+                alt = "white queen";
                 break;
             case "k":
-                piece = <img src={WhiteKing} width="50" height="50" alt="white king" />;
+                src = WhiteKing;
+                alt = "white king";
                 break;
             default:
-                piece = null;
         }
     } else {
         switch (props.piece.type) {
             case "p":
-                piece = <img src={BlackPawn} width="50" height="50" alt="black pawn" />;
+                src = BlackPawn;
+                alt = "black pawn";
                 break;
             case "r":
-                piece = <img src={BlackRook} width="50" height="50" alt="black rook" />;
+                src = BlackRook;
+                alt = "black rook";
                 break;
             case "n":
-                piece = <img src={BlackKnight} width="50" height="50" alt="black knight" />;
+                src = BlackKnight;
+                alt = "black knight";
                 break;
             case "b":
-                piece = <img src={BlackBishop} width="50" height="50" alt="black bishop" />;
+                src = BlackBishop;
+                alt = "black bishop";
                 break;
             case "q":
-                piece = <img src={BlackQueen} width="50" height="50" alt="black queen" />;
+                src = BlackQueen;
+                alt = "black queen";
                 break;
             case "k":
-                piece = <img src={BlackKing} width="50" height="50" alt="black king" />;
+                src = BlackKing;
+                alt = "black king";
                 break;
             default:
-                piece = null;
         }
     }
+    const piece = < img src={src} width="50" height="50" alt={alt} />;
 
     const [{ isDragging }, drag, preview] = useDrag({
         item: { type: ItemTypes.CHESS_PIECE, coordinates: props.coordinates },
@@ -75,9 +87,9 @@ function ChessPiece(props) {
         }),
     });
 
-    // useEffect(() => {
-    //     preview(getEmptyImage(), { captureDraggingState: true });
-    // }, []);
+    useEffect(() => {
+        preview(new Image(src), { captureDraggingState: true });
+    }, []);
 
     return (
         <div
@@ -93,8 +105,4 @@ function ChessPiece(props) {
     );
 }
 
-// const wrapper = new Wrapper(ChessPiece);
-// const wrappedChessPiece = wrapper.wrapWith(makeDraggable);
-
-// export default wrappedChessPiece;
 export default ChessPiece;
