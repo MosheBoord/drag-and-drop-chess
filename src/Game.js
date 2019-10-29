@@ -1,14 +1,16 @@
+
 import Chess from "chess.js";
+import store, { boardUpdate } from "./store";
 
 // The chess instance represents the entire game.
 const chess = new Chess();
 
 // The current board state.
-let boardState = chess.board();
+let board = chess.board();
 
 // observer represents the root react element to be rerendered when the board state changes.
 // (or on a canceled drag)
-let observer = null;
+
 
 // This function generates a random move and plays it.
 export function makeRandomMove() {
@@ -16,7 +18,7 @@ export function makeRandomMove() {
         const moves = chess.moves();
         const move = moves[Math.floor(Math.random() * moves.length)];
         chess.move(move);
-        boardState = chess.board();
+        board = chess.board();
         emitChange();
     } else {
         chess.reset();
@@ -30,12 +32,13 @@ export function isLegalMove() {
     return true;
 }
 
-// This function makes a move.
+// This function makes a move. By default on promotion is queen.
 export function makeMove(fromSquare, toSquare) {
+    console.log("make a move");
     const prevSquare = convertToChessNotation(fromSquare);
     const newSquare = convertToChessNotation(toSquare);
     chess.move({ from: prevSquare, to: newSquare, promotion: "q" });
-    boardState = chess.board();
+    board = chess.board();
     emitChange();
 }
 
@@ -79,19 +82,10 @@ function convertToChessNotation(coordinates) {
     return alphabeticCharacter + (8 - coordinates[1]);
 }
 
-
-
-// For every change on board state rerender observer.
+// For every change on board state update store.
 function emitChange() {
-    observer(boardState);
+    store.dispatch(boardUpdate(board));
 }
 
-// This function sets observer.
-export function observe(o) {
-    if (observer) {
-        throw new Error("Multiple observers not implemented.");
-    }
-
-    observer = o;
-    emitChange();
-}
+// For our initial board state.
+emitChange();

@@ -3,13 +3,18 @@ import * as serviceWorker from "./serviceWorker";
 import React from "react";
 import ReactDOM from "react-dom";
 import Board from "./Board";
-import { observe, makeRandomMove } from "./Game";
+import { makeRandomMove } from "./Game";
+import { Provider } from "react-redux";
+import store from "./store";
 
-const root = document.getElementById("root");
-
-observe(boardState => {
-    ReactDOM.render(<Board boardState={boardState} />, root);
-});
+ReactDOM.render(
+    (
+        <Provider store={store}>
+            <Board />
+        </Provider>
+    )
+    , document.getElementById("root")
+);
 
 setInterval(() => {
     // makeRandomMove();
