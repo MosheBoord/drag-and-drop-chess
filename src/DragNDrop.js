@@ -1,7 +1,7 @@
 /* eslint-disable react/display-name */
 import React from "react";
 import store, { initiateDrag, initiateDrop, dragEnd, dragEntered } from "./store";
-import { makeMove } from "./Game";
+import { makeMove, checkPromotion } from "./Game";
 
 // const dragAndDropManager = new dragAndDropManager();
 const dragAndDropManager = {
@@ -84,6 +84,11 @@ class DraggableItem {
         const from = dragAndDropManager.draggedItem.coordinates;
         const to = dragAndDropManager.dropSurface.coordinates;
         console.log(dragAndDropManager.draggedItem, dragAndDropManager.dropSurface);
+        const isPromotion = checkPromotion(from, to)
+        if (isPromotion) {
+            console.log('yes')
+            console.log(document)
+        }
         makeMove(from, to);
 
         // this feature is not ready yet

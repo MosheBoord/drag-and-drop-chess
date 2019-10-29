@@ -32,12 +32,25 @@ export function isLegalMove() {
     return true;
 }
 
+export function checkPromotion(fromSquare, toSquare) {
+    const fromX = fromSquare[0]
+    const fromY = fromSquare[1]
+    const piece = board[fromY][fromX]
+    if (piece.type === "p" && toSquare[1] === 0){
+        return true
+    }
+    return false
+}
+
 // This function makes a move. By default on promotion is queen.
-export function makeMove(fromSquare, toSquare) {
+export function makeMove(fromSquare, toSquare, promotion = "q") {
     console.log("make a move");
     const prevSquare = convertToChessNotation(fromSquare);
     const newSquare = convertToChessNotation(toSquare);
-    chess.move({ from: prevSquare, to: newSquare, promotion: "q" });
+    if (checkPromotion) {
+        promotion = prompt("choose a promotion")
+    }
+    chess.move({ from: prevSquare, to: newSquare, promotion });
     board = chess.board();
     emitChange();
 }

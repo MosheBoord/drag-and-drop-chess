@@ -12,6 +12,9 @@ function BoardSquare(props) {
     const surface = { coordinates: [props.x, props.y] };
     const isOver = props.dragIsOver.x === props.x && props.dragIsOver.y === props.y;
 
+    const a  = () => {
+        console.log('ahh')
+    }
     // if (isLegalMove()) {
     //     makeMove(props.draggedItem.coordinates, [props.x, props.y]);
     // }

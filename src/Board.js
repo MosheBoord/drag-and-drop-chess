@@ -2,7 +2,7 @@ import React from "react";
 import ChessPiece from "./ChessPiece";
 import BoardSquare from "./BoardSquare";
 import { connect } from "react-redux";
-// import { isLegalMove, makeMove } from "./Game";
+import { isLegalMove, makeMove } from "./Game";
 
 const Board = props => {
     const squares = [];
