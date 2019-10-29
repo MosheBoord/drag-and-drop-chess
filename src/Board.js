@@ -4,7 +4,6 @@ import BoardSquare from "./BoardSquare";
 import { connect } from "react-redux";
 import "./App.css"
 // import { isLegalMove, makeMove } from "./Game";
-import { isLegalMove, makeMove } from "./Game";
 
 const Board = props => {
     const squares = [];

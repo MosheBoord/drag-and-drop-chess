@@ -1,7 +1,7 @@
 /* eslint-disable react/display-name */
 import React from "react";
 import store, { initiateDrag, initiateDrop, dragEnd, dragEntered } from "./store";
-import { makeMove, checkPromotion } from "./Game";
+import { makeMove } from "./Game";
 
 // The dragAndDropManager is a local global space to store all information regarding drag and dropping.
 // It might make more sence to have everything go through the redux store instead.
@@ -112,12 +112,6 @@ class DraggableItem {
         // Regardless once the mouse is released we check if the GAME MOVE is legal (and update the board regardless).
         const from = dragAndDropManager.draggedItem.coordinates;
         const to = dragAndDropManager.dropSurface.coordinates;
-        console.log(dragAndDropManager.draggedItem, dragAndDropManager.dropSurface);
-        const isPromotion = checkPromotion(from, to)
-        if (isPromotion) {
-            console.log('yes')
-            console.log(document)
-        }
         makeMove(from, to);
 
         // this feature is not ready yet
