@@ -3,7 +3,6 @@ import React from "react";
 function Square({ black, children }) {
     const fill = black ? "green" : "beige";
     const stroke = black ? "white" : "black";
-
     return (
         <div
             style={{
