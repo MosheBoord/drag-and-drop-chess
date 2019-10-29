@@ -46,11 +46,11 @@ export function checkPromotion(fromSquare, toSquare) {
 }
 
 // This function makes a move. By default on promotion is queen.
-export function makeMove(fromSquare, toSquare, promotion = "q") {
+export function makeMove(fromSquare, toSquare, promotion) {
     console.log("make a move");
     const prevSquare = convertToChessNotation(fromSquare);
     const newSquare = convertToChessNotation(toSquare);
-    if (checkPromotion) {
+    if (checkPromotion(fromSquare, toSquare)) {
         promotion = prompt("choose a promotion - n, b, r or q")
     }
     chess.move({ from: prevSquare, to: newSquare, promotion });
