@@ -13,6 +13,7 @@ const dragAndDropManager = {
     draggableItems: [],
     // currently the next line is not being used
     dragSurfaces: [],
+    dropElements: [],
     dropSurfaces: [],
 };
 
@@ -66,6 +67,11 @@ class DraggableItem {
         this.el.style.pointerEvents = "none";
         // set the global dragged element to current dragged element
         dragAndDropManager.draggedItem = this.item;
+
+        for (let i = 0; i < dragAndDropManager.dropSurfaces.length; i++) {
+            dragAndDropManager.dropSurfaces[i].canDrop(this.item, true);
+        }
+
         // Tell the store which item is being dragged.
         store.dispatch(initiateDrag(this.item));
     }
@@ -91,6 +97,10 @@ class DraggableItem {
             dragAndDropManager.dropSurface.setIsOver(false);
         }
 
+        for (let i = 0; i < dragAndDropManager.dropSurfaces.length; i++) {
+            dragAndDropManager.dropSurfaces[i].canDrop(null, false);
+        }
+
         // stop moving when mouse button is released:
         document.onmouseup = null;
         document.onmousemove = null;
@@ -111,8 +121,7 @@ class DraggableItem {
         dragAndDropManager.draggedItem = null;
         this.el.style.pointerEvents = "";
 
-        // I believe this is old code, and can probably be deleted.
-        // resets element as a result of canceled drag (as of now every drag is considered to be cancelled)
+        // resets element as a result of canceled drag
         this.el.style.top = this.startingTopPosition;
         this.el.style.left = this.startingLeftPosition;
         this.el.style.color = this.color;
@@ -126,6 +135,9 @@ class DropSurfaceEntity {
     constructor(surface) {
         this.el = null;
         this.surface = surface;
+        if (!dragAndDropManager.dropSurfaces.includes(surface)) {
+            dragAndDropManager.dropSurfaces.push(surface);
+        }
         this.setRef = this.setRef.bind(this);
         this.onMouseEntered = this.onMouseEntered.bind(this);
     }
@@ -135,12 +147,12 @@ class DropSurfaceEntity {
     setRef(el) {
         if (el) {
             this.el = el;
-            for (let i = 0; i < dragAndDropManager.dropSurfaces.length; i++) {
-                if (dragAndDropManager.dropSurfaces[i].el === el) {
+            for (let i = 0; i < dragAndDropManager.dropElements.length; i++) {
+                if (dragAndDropManager.dropElements[i].el === el) {
                     return;
                 }
             }
-            dragAndDropManager.dropSurfaces.push(this);
+            dragAndDropManager.dropElements.push(this);
             this.el.onmouseenter = this.onMouseEntered;
         }
     }
@@ -169,11 +181,6 @@ export function useDrag(item) {
     const dragItem = new DraggableItem(item);
     return dragItem.setRef;
 }
-
-// export function useDragSurface(surface) {
-//     const dragSurface = new DropSurfaceEntity(surface);
-//     return dragSurface.setRef;
-// }
 
 // As of now this function simply creates a new Drop Surface and returns a ref to be added to the drop surface node.
 // We may want to make this some sort of hook to attach to any React Class as apposed to being used simply with the Drop Surface Component.
@@ -228,11 +235,3 @@ export class DropSurface extends React.Component {
         );
     }
 }
-
-// export function over(isOverFunc, surface) {
-//     console.log(dragAndDropManager.dropSurface, surface);
-//     if (dragAndDropManager.dropSurface && dragAndDropManager.dropSurface.id === surface.id) {
-//         console.log("id");
-//         isOverFunc(true);
-//     }
-// }

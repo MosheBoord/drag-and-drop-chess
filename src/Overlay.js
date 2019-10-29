@@ -1,5 +1,5 @@
 import React from "react";
-const Overlay = ({ color }) => {
+const Overlay = ({ color, opacity = .5 }) => {
     return (
         <div
             style={{
@@ -9,7 +9,7 @@ const Overlay = ({ color }) => {
                 height: "100%",
                 width: "100%",
                 zIndex: 1,
-                opacity: 0.75,
+                opacity,
                 backgroundColor: color,
             }}
         />

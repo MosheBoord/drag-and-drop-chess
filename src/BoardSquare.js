@@ -12,7 +12,11 @@ function BoardSquare(props) {
     const surface = { id: "" + props.x + props.y, coordinates: [props.x, props.y] };
 
     const [isOver, setIsOver] = useState(false);
+    const [canDrop, setCanDrop] = useState(false);
     surface.setIsOver = setIsOver;
+    surface.canDrop = (item, truthValue) => {
+        setCanDrop(truthValue && isLegalMove(item.coordinates, [props.x, props.y]));
+    };
 
     return (
         <DropSurface surface={surface}>
@@ -24,9 +28,9 @@ function BoardSquare(props) {
                 }}
             >
                 <Square className={className} black={black}>{props.children}</Square>
-                {/* {isOver && !canDrop && <Overlay color="red" />}
-                    {!isOver && canDrop && <Overlay color="yellow" />} */}
-                {isOver && <Overlay color="yellow" />}
+                {isOver && !canDrop && <Overlay color="red" opacity={.9} />}
+                {/* {!isOver && canDrop && <Overlay color="yellow" opacity={.9} />} */}
+                {isOver && canDrop && <Overlay color="Aqua" opacity={.9} p />}
             </div>
         </DropSurface>
     );

@@ -27,9 +27,12 @@ export function makeRandomMove() {
 
 // This function checks if a move is legal. (Still needs to be done)
 
-export function isLegalMove() {
-    // console.log("move is legal");
-    return true;
+export function isLegalMove(fromSquare, toSquare) {
+    const tempChess = new Chess(chess.fen());
+    const prevSquare = convertToChessNotation(fromSquare);
+    const newSquare = convertToChessNotation(toSquare);
+    const move = tempChess.move({ from: prevSquare, to: newSquare, promotion: "q" });
+    return !!move;
 }
 
 // This function makes a move. By default on promotion is queen.
