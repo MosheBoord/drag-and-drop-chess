@@ -1,8 +1,4 @@
-import React, { useEffect } from "react";
-import { ItemTypes } from "./Constants";
-import { useDrag } from "react-dnd";
-// import { getEmptyImage } from "react-dnd-html5-backend";
-// import CustomDragLayer from "./CustomDragLayer";
+import React from "react";
 
 import BlackPawn from "./chessImages/bP.png";
 import BlackRook from "./chessImages/bR.png";
@@ -16,6 +12,8 @@ import WhiteKnight from "./chessImages/wN.png";
 import WhiteBishop from "./chessImages/wB.png";
 import WhiteQueen from "./chessImages/wQ.png";
 import WhiteKing from "./chessImages/wK.png";
+import { Draggable } from "./DragNDrop";
+import { ItemTypes } from "./Constants";
 
 function ChessPiece(props) {
     let src;
@@ -78,30 +76,21 @@ function ChessPiece(props) {
             default:
         }
     }
+
     const piece = < img src={src} width="50" height="50" alt={alt} />;
 
-    const [{ isDragging }, drag, preview] = useDrag({
-        item: { type: ItemTypes.CHESS_PIECE, coordinates: props.coordinates },
-        collect: monitor => ({
-            isDragging: !!monitor.isDragging(),
-        }),
-    });
-
-    useEffect(() => {
-        preview(new Image(src), { captureDraggingState: true });
-    }, []);
-
     return (
-        <div
-            ref={drag}
-            style={{
-                fontSize: 25,
-                fontWeight: "bold",
-                cursor: "move",
-            }}
-        >
-            {piece}
-        </div>
+        <Draggable item={{ type: ItemTypes.CHESS_PIECE, coordinates: props.coordinates }} >
+            <div
+                style={{
+                    fontSize: 25,
+                    fontWeight: "bold",
+                    cursor: "move",
+                }}
+            >
+                {piece}
+            </div>
+        </Draggable>
     );
 }
 

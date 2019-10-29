@@ -1,4 +1,5 @@
 import { createStore, applyMiddleware } from "redux";
+<<<<<<< HEAD
 import { createLogger } from "redux-logger";
 
 const logger = createLogger({
@@ -11,6 +12,9 @@ const logger = createLogger({
     return false;
   }
 });
+=======
+import loggerMiddleware from "redux-logger";
+>>>>>>> cc78fb282ab4801764fe39503640861c43c29603
 
 //ACTION TYPES
 
@@ -91,6 +95,10 @@ const reducer = (prevState = initialState, action) => {
   }
 };
 
+<<<<<<< HEAD
 const store = createStore(reducer, applyMiddleware(logger));
+=======
+const store = createStore(reducer, applyMiddleware(loggerMiddleware));
+>>>>>>> cc78fb282ab4801764fe39503640861c43c29603
 
 export default store;
