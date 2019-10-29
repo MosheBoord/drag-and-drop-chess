@@ -3,16 +3,20 @@ import React from "react";
 import store, { initiateDrag, initiateDrop, dragEnd, dragEntered } from "./store";
 import { makeMove } from "./Game";
 
-// const dragAndDropManager = new dragAndDropManager();
+// The dragAndDropManager is a local global space to store all information regarding drag and dropping.
+// It might make more sence to have everything go through the redux store instead.
 const dragAndDropManager = {
     draggedItem: null,
+    // currently the next line is not being used
     draggedSurface: null,
     dropSurface: null,
     draggableItems: [],
+    // currently the next line is not being used
     dragSurfaces: [],
     dropSurfaces: [],
 };
 
+// This represents an item that is draggable. Both the physical node and the logical item.
 class DraggableItem {
     constructor(item) {
         this.item = item;
@@ -27,6 +31,8 @@ class DraggableItem {
         this.closeDragElement = this.closeDragElement.bind(this);
     }
 
+    // This function will be set to the reference of the draggable node to be run on mounting.
+    // It is how we keep track of what nodes are already set and how we add event listeners to said nodes.
     setRef(el) {
         if (el) {
             this.el = el;
@@ -40,6 +46,7 @@ class DraggableItem {
         }
     }
 
+    // This is a simple event listener to detect when the mouse is pressed on draggable item (node).
     dragMouseDown(e) {
         e = e || window.event;
         e.preventDefault();
@@ -63,6 +70,7 @@ class DraggableItem {
         store.dispatch(initiateDrag(this.item));
     }
 
+    // This is a simple event listener to detect when the mouse is dragging with draggable item (node).
     elementDrag(e) {
         e = e || window.event;
         e.preventDefault();
@@ -76,14 +84,17 @@ class DraggableItem {
         this.el.style.left = (this.el.offsetLeft - this.pos1) + "px";
     }
 
+    // This is a simple event listener to detect when the mouse is released from draggable item (node).
     closeDragElement() {
         // stop moving when mouse button is released:
         document.onmouseup = null;
         document.onmousemove = null;
 
+        // This is probably the biggest flaw with this file. It references games.js directly, 
+        // while it probably should run a drop function that runs the make move function.
+        // Regardless once the mouse is released we check if the GAME MOVE is legal (and update the board regardless).
         const from = dragAndDropManager.draggedItem.coordinates;
         const to = dragAndDropManager.dropSurface.coordinates;
-        console.log(dragAndDropManager.draggedItem, dragAndDropManager.dropSurface);
         makeMove(from, to);
 
         // this feature is not ready yet
@@ -95,49 +106,17 @@ class DraggableItem {
         dragAndDropManager.draggedItem = null;
         this.el.style.pointerEvents = "";
 
+        // I believe this is old code, and can probably be deleted.
         // resets element as a result of canceled drag (as of now every drag is considered to be cancelled)
         this.el.style.top = this.startingTopPosition;
         this.el.style.left = this.startingLeftPosition;
         this.el.style.color = this.color;
-        // store.dispatch(initiateDrop());
 
         store.dispatch(dragEnd());
     }
-
-    dragElement() {
-
-    }
 }
 
-// class DragSurfaceEntity {
-//     constructor(surface) {
-//         this.el = null;
-//         this.surface = surface;
-//         this.setRef = this.setRef.bind(this);
-//         this.onMouseEntered = this.onMouseEntered.bind(this);
-//     }
-
-//     setRef(el) {
-//         if (el) {
-//             this.el = el;
-//             for (let i = 0; i < dragAndDropManager.dragSurfaces.length; i++) {
-//                 if (dragAndDropManager.dragSurfaces[i].el === el) {
-//                     return;
-//                 }
-//             }
-//             dragAndDropManager.dragSurfaces.push(this);
-//             this.el.onmouseenter = this.onMouseEntered;
-//         }
-//     }
-
-//     onMouseEntered() {
-//         const { draggedItem } = store.getState();
-//         if (draggedItem.type) {
-//             store.dispatch(dragEntered(this.surface));
-//         }
-//     }
-// }
-
+// This represents an entity that is a drop surface. Both the physical node and the logical entity.
 class DropSurfaceEntity {
     constructor(surface) {
         this.el = null;
@@ -146,6 +125,8 @@ class DropSurfaceEntity {
         this.onMouseEntered = this.onMouseEntered.bind(this);
     }
 
+    // This function will be set to the reference of the draggable node to be run on mounting.
+    // It is how we keep track of what nodes are already set and how we add event listeners to said nodes.
     setRef(el) {
         if (el) {
             this.el = el;
@@ -159,15 +140,15 @@ class DropSurfaceEntity {
         }
     }
 
+    // This is a simple event listener to detect when the mouse is moved onto a drop surface (node).
+    // Somewhere, maybe here we should check to see if we are currently dragging a draggable item.
     onMouseEntered() {
-        // const { draggedItem } = store.getState();
-        // if (draggedItem.type) {
-        //     store.dispatch(dragEntered(this.surface));
-        // }
         dragAndDropManager.dropSurface = this.surface;
     }
 }
 
+// As of now this function simply creates a new Draggable Item and returns a ref to be added to the draggable node.
+// We may want to make this some sort of hook to attach to any React Class as apposed to being used simply with the Draggable Component.
 export function useDrag(item) {
     const dragItem = new DraggableItem(item);
     return dragItem.setRef;
@@ -178,17 +159,22 @@ export function useDrag(item) {
 //     return dragSurface.setRef;
 // }
 
+// As of now this function simply creates a new Drop Surface and returns a ref to be added to the drop surface node.
+// We may want to make this some sort of hook to attach to any React Class as apposed to being used simply with the Drop Surface Component.
 export function useDropSurface(surface) {
     const dropSurface = new DropSurfaceEntity(surface);
     return dropSurface.setRef;
 }
 
+// This React Component simply wraps the component that needs to be made Draggable.
 export class Draggable extends React.Component {
+    // This component takes in an item object.
     constructor(props) {
         super(props);
         this.item = props.item;
     }
 
+    // If you want more documentation on this check out the react docs on refs.
     render() {
         const refFunc = useDrag(this.item);
         return (
@@ -205,31 +191,15 @@ export class Draggable extends React.Component {
     }
 }
 
-// export class DragSurface extends React.Component {
-//     constructor(props) {
-//         super(props);
-//         this.surface = props.surface;
-//     }
-
-//     render() {
-//         const refFunc = useDragSurface(this.surface);
-//         return (
-//             <div
-//                 className={this.props.className}
-//                 ref={refFunc}
-//             >
-//                 {this.props.children}
-//             </div >
-//         );
-//     }
-// }
-
+// This React Component simply wraps the component that needs to be made into a Drop Surface.
 export class DropSurface extends React.Component {
+    // This component takes in a surface object.
     constructor(props) {
         super(props);
         this.surface = props.surface;
     }
 
+    // If you want more documentation on this check out the react docs on refs.
     render() {
         const refFunc = useDropSurface(this.surface);
         return (
