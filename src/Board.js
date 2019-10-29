@@ -2,6 +2,7 @@ import React from "react";
 import ChessPiece from "./ChessPiece";
 import BoardSquare from "./BoardSquare";
 import { connect } from "react-redux";
+import "./App.css"
 // import { isLegalMove, makeMove } from "./Game";
 
 const Board = props => {
@@ -12,16 +13,7 @@ const Board = props => {
     }
 
     return (
-        <div
-            style={{
-                width: "100%",
-                height: "100%",
-                display: "flex",
-                flexWrap: "wrap",
-                border: "1px solid gray",
-                margin: "5px"
-            }}
-        >
+        <div className="board-container">
             {squares}
         </div>
     );
