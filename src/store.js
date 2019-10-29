@@ -1,55 +1,67 @@
 import { createStore, applyMiddleware } from "redux";
-<<<<<<< HEAD
 import { createLogger } from "redux-logger";
 
 const logger = createLogger({
   predicate: (getState, action) => {
-    // use the next line to disable a specific action from being logged
+    // Use the next line to disable specific actions from being logged.
+    // return ![ACTION_TYPE_ONE, ACTION_TYPE_TWO, ...].includes(action.type);
 
-    // return action.type !== DRAG_ENTERED;
-
-    // return false if you don't want to log anything.
-    return false;
+    // Return false if you don't want to log anything.
+    return true;
   }
 });
-=======
-import loggerMiddleware from "redux-logger";
->>>>>>> cc78fb282ab4801764fe39503640861c43c29603
 
 //ACTION TYPES
 
+// This action takes place when the mouse is pressed on a draggable item.
 const INITIATE_DRAG = "INITIATE_DRAG";
+
+// This action takes place whenever the game decides to update the board. (even as a result of an illegal move)
 const BOARD_UPDATE = "BOARD_UPDATE";
+
+// This action takes place when the mouse is lifted from a draggable item.
 const DRAG_END = "DRAG_END";
-const DRAG_ENTERED = "DRAG_ENTERED";
-const INITIATE_DROP = "INITIATE_DROP";
+
+// This action takes place when the mouse drags a draggable item over a drop surface.
+// At this moment this action is never dispatched.
+//const DRAG_ENTERED = "DRAG_ENTERED";
+
+// This action takes place when the mouse is lifted from a draggable item while over a drop surface.
+// At this moment this action is never dispatched.
+//const INITIATE_DROP = "INITIATE_DROP";
 
 //ACTION CREATORS
 
+// draggedItem - the item to be dragged
 export const initiateDrag = draggedItem => ({
   type: INITIATE_DRAG,
   draggedItem
 });
 
-export const initiateDrop = () => ({
-  type: INITIATE_DROP,
-});
+// Currently not implemented.
+// export const initiateDrop = () => ({
+//   type: INITIATE_DROP,
+// });
 
+// draggedItem - the item that was being dragged
 export const dragEnd = () => ({
   type: DRAG_END,
   draggedItem: { coordinates: [] },
 });
 
-export const dragEntered = surface => ({
-  type: DRAG_ENTERED,
-  surface
-});
+// Currently not implemented.
+// export const dragEntered = surface => ({
+//   type: DRAG_ENTERED,
+//   surface
+// });
 
+// chessBoard - the current state of the chess game.
 export const boardUpdate = chessBoard => ({
   type: BOARD_UPDATE,
   chessBoard,
 });
 
+// setting up an initial chessboard state
 const chessBoard = [];
 for (let x = 0; x < 8; x++) {
   let row = [];
@@ -59,13 +71,16 @@ for (let x = 0; x < 8; x++) {
   chessBoard.push(row);
 }
 
+// setting up initial redux state
 const initialState = {
   chessBoard,
   draggedItem: { coordinates: [] },
+  // I'm not sure if the next two lines are necessary
   dragIsOver: { coordinates: [], x: -1, y: -1 },
   checkForMove: false
 };
 
+// all actions go through this reducer
 const reducer = (prevState = initialState, action) => {
   switch (action.type) {
     case INITIATE_DRAG:
@@ -73,18 +88,24 @@ const reducer = (prevState = initialState, action) => {
       return {
         ...prevState,
         draggedItem: action.draggedItem,
+        // I'm not sure if the next line is necessary
         dragIsOver: { x: -1, y: -1 }
       };
-    case INITIATE_DROP:
-      return {
-        ...prevState,
-        checkForMove: true
-      };
-    case DRAG_ENTERED:
-      return {
-        ...prevState,
-        dragIsOver: action.surface
-      };
+
+    // Currently not implemented.
+    // case INITIATE_DROP:
+    //   return {
+    //     ...prevState,
+    //     checkForMove: true
+    //   };
+    // Currently not implemented.
+
+    // case DRAG_ENTERED:
+    //   return {
+    //     ...prevState,
+    //     dragIsOver: action.surface
+    //   };
+
     case BOARD_UPDATE:
       return {
         ...prevState,
@@ -95,10 +116,6 @@ const reducer = (prevState = initialState, action) => {
   }
 };
 
-<<<<<<< HEAD
 const store = createStore(reducer, applyMiddleware(logger));
-=======
-const store = createStore(reducer, applyMiddleware(loggerMiddleware));
->>>>>>> cc78fb282ab4801764fe39503640861c43c29603
 
 export default store;
