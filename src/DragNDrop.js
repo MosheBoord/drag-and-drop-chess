@@ -83,7 +83,6 @@ class DraggableItem {
 
         const from = dragAndDropManager.draggedItem.coordinates;
         const to = dragAndDropManager.dropSurface.coordinates;
-        console.log(dragAndDropManager.draggedItem, dragAndDropManager.dropSurface);
         makeMove(from, to);
 
         // this feature is not ready yet

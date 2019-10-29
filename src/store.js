@@ -1,5 +1,16 @@
 import { createStore, applyMiddleware } from "redux";
-import loggerMiddleware from "redux-logger";
+import { createLogger } from "redux-logger";
+
+const logger = createLogger({
+  predicate: (getState, action) => {
+    // use the next line to disable a specific action from being logged
+
+    // return action.type !== DRAG_ENTERED;
+
+    // return false if you don't want to log anything.
+    return false;
+  }
+});
 
 //ACTION TYPES
 
@@ -80,6 +91,6 @@ const reducer = (prevState = initialState, action) => {
   }
 };
 
-const store = createStore(reducer, applyMiddleware(loggerMiddleware));
+const store = createStore(reducer, applyMiddleware(logger));
 
 export default store;
