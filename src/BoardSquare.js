@@ -16,7 +16,18 @@ function BoardSquare(props) {
     surface.setIsOver = setIsOver;
     surface.canDrop = (item, truthValue) => {
         setCanDrop(truthValue && isLegalMove(item.coordinates, [props.x, props.y]));
+
     };
+
+    // console.log(canDrop);
+    let overlay = null;
+    if (isOver && !canDrop) {
+        overlay = <Overlay color="Aqua" opacity={.9} p />;
+    } else if (!isOver && canDrop) {
+        overlay = <Overlay color="yellow" opacity={.9} />;
+    } else if (isOver && canDrop) {
+        overlay = <Overlay color="Aqua" opacity={.9} p />;
+    }
 
     return (
         <DropSurface surface={surface}>
@@ -25,12 +36,15 @@ function BoardSquare(props) {
                     position: "relative",
                     width: "100%",
                     height: "100%",
+                    textAlign: "center"
                 }}
             >
                 <Square className={className} black={black}>{props.children}</Square>
-                {isOver && !canDrop && <Overlay color="red" opacity={.9} />}
+                {/* {isOver && !canDrop && <Overlay color="red" opacity={.9} />} */}
                 {/* {!isOver && canDrop && <Overlay color="yellow" opacity={.9} />} */}
-                {isOver && canDrop && <Overlay color="Aqua" opacity={.9} p />}
+                {/* {isOver && canDrop && <Overlay color="Aqua" opacity={.9} p />} */}
+                {overlay}
+                {/* {isOver && !canDrop ? <Overlay color="red" opacity={.9} /> : !isOver && canDrop ? <Overlay color="yellow" opacity={.9} /> : isOver && canDrop ? <Overlay color="Aqua" opacity={.9} p /> : null} */}
             </div>
         </DropSurface>
     );

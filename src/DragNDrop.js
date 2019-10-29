@@ -54,6 +54,8 @@ class DraggableItem {
         // get the element starting position
         this.startingTopPosition = this.el.offsetTop;
         this.startingLeftPosition = this.el.offsetLeft;
+
+        // I think this is old code.
         // get intitial color for reverting on cancel drag
         this.color = this.el.style.color;
         // get the mouse cursor position at startup:
