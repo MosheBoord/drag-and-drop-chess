@@ -86,6 +86,11 @@ class DraggableItem {
 
     // This is a simple event listener to detect when the mouse is released from draggable item (node).
     closeDragElement() {
+        // This tells the drag surface that the mouse is no longer dragging an item over it.
+        if (dragAndDropManager.dropSurface) {
+            dragAndDropManager.dropSurface.setIsOver(false);
+        }
+
         // stop moving when mouse button is released:
         document.onmouseup = null;
         document.onmousemove = null;
@@ -143,7 +148,18 @@ class DropSurfaceEntity {
     // This is a simple event listener to detect when the mouse is moved onto a drop surface (node).
     // Somewhere, maybe here we should check to see if we are currently dragging a draggable item.
     onMouseEntered() {
+        // This tells the old drag surface that the mouse is no longer dragging an item over it.
+        // Really there should be a mouse exit event for this.
+        if (dragAndDropManager.dropSurface) {
+            dragAndDropManager.dropSurface.setIsOver(false);
+        }
+
         dragAndDropManager.dropSurface = this.surface;
+
+        // Tell drag surface that the mouse is dragging an item over it.
+        if (dragAndDropManager.draggedItem) {
+            this.surface.setIsOver(true);
+        }
     }
 }
 
@@ -212,3 +228,11 @@ export class DropSurface extends React.Component {
         );
     }
 }
+
+// export function over(isOverFunc, surface) {
+//     console.log(dragAndDropManager.dropSurface, surface);
+//     if (dragAndDropManager.dropSurface && dragAndDropManager.dropSurface.id === surface.id) {
+//         console.log("id");
+//         isOverFunc(true);
+//     }
+// }

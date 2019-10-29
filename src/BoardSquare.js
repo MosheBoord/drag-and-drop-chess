@@ -1,20 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import Square from "./Square";
 import { isLegalMove, makeMove } from "./Game";
 import { ItemTypes } from "./Constants";
-import { DropSurface } from "./DragNDrop";
+import { DropSurface, over } from "./DragNDrop";
 import Overlay from "./Overlay";
 import { connect } from "react-redux";
 
 function BoardSquare(props) {
     const black = (props.x + props.y) % 2 === 1;
     const className = black ? "black" : "white";
-    const surface = { coordinates: [props.x, props.y] };
-    const isOver = props.dragIsOver.x === props.x && props.dragIsOver.y === props.y;
+    const surface = { id: "" + props.x + props.y, coordinates: [props.x, props.y] };
 
-    // if (isLegalMove()) {
-    //     makeMove(props.draggedItem.coordinates, [props.x, props.y]);
-    // }
+    const [isOver, setIsOver] = useState(false);
+    surface.setIsOver = setIsOver;
 
     return (
         <DropSurface surface={surface}>

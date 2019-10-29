@@ -34,7 +34,6 @@ export function isLegalMove() {
 
 // This function makes a move. By default on promotion is queen.
 export function makeMove(fromSquare, toSquare) {
-    console.log("make a move");
     const prevSquare = convertToChessNotation(fromSquare);
     const newSquare = convertToChessNotation(toSquare);
     chess.move({ from: prevSquare, to: newSquare, promotion: "q" });
