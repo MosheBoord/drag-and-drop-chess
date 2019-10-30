@@ -30,6 +30,10 @@ const DRAG_END = "DRAG_END";
 // At this moment this action is never dispatched.
 //const INITIATE_DROP = "INITIATE_DROP";
 
+const PROMOTE = "PROMOTE";
+
+const PROMOTION_CHOICE = "PROMOTION_CHOICE"
+
 //ACTION CREATORS
 
 // draggedItem - the item to be dragged
@@ -61,6 +65,15 @@ export const boardUpdate = chessBoard => ({
   chessBoard,
 });
 
+export const promote = () => ({
+  type : PROMOTE
+})
+
+export const promotionChoice = (value) => ({
+  type: PROMOTION_CHOICE,
+  value
+})
+
 // setting up an initial chessboard state
 const chessBoard = [];
 for (let x = 0; x < 8; x++) {
@@ -77,7 +90,11 @@ const initialState = {
   draggedItem: { coordinates: [] },
   // I'm not sure if the next two lines are necessary
   dragIsOver: { coordinates: [], x: -1, y: -1 },
-  checkForMove: false
+  checkForMove: false,
+  promotion: {
+    popUp: false,
+    value: ""
+  }
 };
 
 // all actions go through this reducer
@@ -111,6 +128,13 @@ const reducer = (prevState = initialState, action) => {
         ...prevState,
         chessBoard: action.chessBoard,
       };
+    case PROMOTE:
+        return {
+          ...prevState, 
+          promotion: {...prevState.promotion, popUp: !prevState.promotion.popUp}}
+    case PROMOTION_CHOICE:
+        return {...prevState, 
+          promotion: {...prevState.promotion, value: action.value}}
     default:
       return prevState;
   }

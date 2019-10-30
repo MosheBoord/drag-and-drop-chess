@@ -1,7 +1,7 @@
 /* eslint-disable react/display-name */
 import React from "react";
-import store, { initiateDrag, initiateDrop, dragEnd, dragEntered } from "./store";
-import { makeMove } from "./Game";
+import store, { initiateDrag, initiateDrop, dragEnd, dragEntered, promote } from "./store";
+import { makeMove, checkPromotion } from "./Game";
 
 // The dragAndDropManager is a local global space to store all information regarding drag and dropping.
 // It might make more sence to have everything go through the redux store instead.
@@ -30,6 +30,7 @@ class DraggableItem {
         this.dragMouseDown = this.dragMouseDown.bind(this);
         this.elementDrag = this.elementDrag.bind(this);
         this.closeDragElement = this.closeDragElement.bind(this);
+        this.promotionPopUp = store.getState().promotionPopUp
     }
 
     // This function will be set to the reference of the draggable node to be run on mounting.
@@ -93,7 +94,7 @@ class DraggableItem {
     }
 
     // This is a simple event listener to detect when the mouse is released from draggable item (node).
-    closeDragElement() {
+    async closeDragElement() {
         // This tells the drag surface that the mouse is no longer dragging an item over it.
         if (dragAndDropManager.dropSurface) {
             dragAndDropManager.dropSurface.setIsOver(false);
@@ -112,7 +113,15 @@ class DraggableItem {
         // Regardless once the mouse is released we check if the GAME MOVE is legal (and update the board regardless).
         const from = dragAndDropManager.draggedItem.coordinates;
         const to = dragAndDropManager.dropSurface.coordinates;
-        makeMove(from, to);
+
+        //will return true or false, if we should render the promotion pop up or not
+        const toPromote = checkPromotion(from, to);
+        if (!toPromote) makeMove(from, to, false);
+        else {
+            await store.dispatch(promote());
+                let promotion = store.getState().promotion.value
+                makeMove(from, to, promotion);
+        }
 
         // this feature is not ready yet
 

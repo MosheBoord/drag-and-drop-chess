@@ -3,6 +3,7 @@ import ChessPiece from "./ChessPiece";
 import BoardSquare from "./BoardSquare";
 import { connect } from "react-redux";
 import "./App.css"
+import { pipelineTopicExpression } from "@babel/types";
 // import { isLegalMove, makeMove } from "./Game";
 
 const Board = props => {
@@ -16,8 +17,7 @@ const Board = props => {
         <div className="board-container">
             {squares}
         </div>
-    );
-
+    )     
 };
 
 const mapStateToProps = state => ({

@@ -50,9 +50,6 @@ export function makeMove(fromSquare, toSquare, promotion) {
     console.log("make a move");
     const prevSquare = convertToChessNotation(fromSquare);
     const newSquare = convertToChessNotation(toSquare);
-    if (checkPromotion(fromSquare, toSquare)) {
-        promotion = prompt("choose a promotion - n, b, r or q");
-    }
     chess.move({ from: prevSquare, to: newSquare, promotion });
     board = chess.board();
     emitChange();
