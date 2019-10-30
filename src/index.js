@@ -3,14 +3,16 @@ import * as serviceWorker from "./serviceWorker";
 import React from "react";
 import ReactDOM from "react-dom";
 import Board from "./Board";
-import { makeRandomMove } from "./Game";
+// import { makeRandomMove } from "./Game";
 import { Provider } from "react-redux";
 import store from "./store";
+// import PromotionDialog from "./PromotionDialog";
 
 ReactDOM.render(
     (
         <Provider store={store}>
             <Board />
+            {/* <PromotionDialog></PromotionDialog> */}
         </Provider>
     )
     , document.getElementById("root")

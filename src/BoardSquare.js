@@ -21,11 +21,11 @@ function BoardSquare(props) {
 
     let overlay = null;
     if (isOver && !canDrop) {
-        overlay = <Overlay color="red" opacity={.9} p />;
+        overlay = <Overlay color="red" opacity={.8} p />;
     } else if (!isOver && canDrop) {
-        overlay = <Overlay color="yellow" opacity={.9} />;
+        overlay = <Overlay color="yellow" opacity={.8} />;
     } else if (isOver && canDrop) {
-        overlay = <Overlay color="Aqua" opacity={.9} p />;
+        overlay = <Overlay color="Aqua" opacity={.8} p />;
     }
 
     return (
