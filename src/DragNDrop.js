@@ -116,11 +116,11 @@ class DraggableItem {
 
         //will return true or false, if we should render the promotion pop up or not
         const toPromote = checkPromotion(from, to);
-        if (!toPromote) makeMove(from, to, false);
+        if (!toPromote) makeMove(from, to);
         else {
-            await store.dispatch(promote());
-                let promotion = store.getState().promotion.value
-                makeMove(from, to, promotion);
+            await store.dispatch(promote(from, to));
+            // let promotion = store.getState().promotion.value
+            // makeMove(from, to, promotion);
         }
 
         // this feature is not ready yet

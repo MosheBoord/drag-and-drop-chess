@@ -1,7 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
 import "./App.css"
-import { promotionChoice, promote } from './store'
+import { promote } from './store'
+import { makeMove } from "./Game"
 
 class Promotion extends React.Component {
     constructor(){
@@ -22,8 +23,9 @@ class Promotion extends React.Component {
 
     submit(event){
         event.preventDefault()
-        this.props.setPromotionValue(this.state.selected)
-        this.props.promote(promote())
+        const { from, to } = this.props.promotion
+        this.props.promote(promote(from, to))
+        makeMove(from, to, this.state.selected)
     }
 
     render(){
@@ -62,8 +64,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    setPromotionValue: (value) => dispatch(promotionChoice(value)),
-    promote: () => dispatch(promote())
+    promote: (from, to) => dispatch(promote(from, to))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Promotion);

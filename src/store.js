@@ -32,8 +32,6 @@ const DRAG_END = "DRAG_END";
 
 const PROMOTE = "PROMOTE";
 
-const PROMOTION_CHOICE = "PROMOTION_CHOICE"
-
 //ACTION CREATORS
 
 // draggedItem - the item to be dragged
@@ -65,14 +63,11 @@ export const boardUpdate = chessBoard => ({
   chessBoard,
 });
 
-export const promote = () => ({
-  type : PROMOTE
-})
-
-export const promotionChoice = (value) => ({
-  type: PROMOTION_CHOICE,
-  value
-})
+export const promote = (from = [], to = []) => ({
+    type: PROMOTE,
+    from: from,
+    to: to
+});
 
 // setting up an initial chessboard state
 const chessBoard = [];
@@ -93,7 +88,9 @@ const initialState = {
   checkForMove: false,
   promotion: {
     popUp: false,
-    value: ""
+    value: "",
+    from: [],
+    to: []
   }
 };
 
@@ -131,10 +128,7 @@ const reducer = (prevState = initialState, action) => {
     case PROMOTE:
         return {
           ...prevState, 
-          promotion: {...prevState.promotion, popUp: !prevState.promotion.popUp}}
-    case PROMOTION_CHOICE:
-        return {...prevState, 
-          promotion: {...prevState.promotion, value: action.value}}
+          promotion: {...prevState.promotion, popUp: !prevState.promotion.popUp, from: action.from, to: action.to}}
     default:
       return prevState;
   }
