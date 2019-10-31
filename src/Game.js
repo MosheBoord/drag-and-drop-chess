@@ -46,7 +46,7 @@ export function checkPromotion(fromSquare, toSquare) {
 }
 
 export function makeMove(fromSquare, toSquare, promotion) {
-    console.log("make a move");
+    // console.log("make a move");
     const prevSquare = convertToChessNotation(fromSquare);
     const newSquare = convertToChessNotation(toSquare);
     // if (checkPromotion(fromSquare, toSquare)) {

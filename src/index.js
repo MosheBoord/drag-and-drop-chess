@@ -3,11 +3,12 @@ import * as serviceWorker from "./serviceWorker";
 import React from "react";
 import ReactDOM from "react-dom";
 import Board from "./Board";
-import { makeRandomMove } from "./Game";
+// import { makeRandomMove } from "./Game";
 import { Provider } from "react-redux";
 import store from "./store";
 import './App.css'
 import Promotion from './Promotion'
+// import PromotionDialog from "./PromotionDialog";
 
 ReactDOM.render(
     (
@@ -22,6 +23,8 @@ ReactDOM.render(
                 </div>
             </div>
 
+            <Board />
+            {/* <PromotionDialog></PromotionDialog> */}
         </Provider>
     )
     , document.getElementById("root")

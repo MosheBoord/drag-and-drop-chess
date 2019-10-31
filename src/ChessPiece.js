@@ -15,10 +15,12 @@ import WhiteKing from "./chessImages/wK.png";
 import { Draggable } from "./DragNDrop";
 import { ItemTypes } from "./Constants";
 
+import { TransitionToSolidColor } from "./Shaders";
+
 function ChessPiece(props) {
     let src;
     let alt;
-
+    let check = false;
     if (props.piece.color === "w") {
         switch (props.piece.type) {
             case "p":
@@ -44,6 +46,7 @@ function ChessPiece(props) {
             case "k":
                 src = WhiteKing;
                 alt = "white king";
+                check = true;
                 break;
             default:
         }
@@ -77,14 +80,63 @@ function ChessPiece(props) {
         }
     }
 
-    const piece = < img src={src} width="50" height="50" alt={alt} />;
+    let piece = < img src={src} alt={alt} style={{
+        // textAlign: "center",
+        width: "100%",
+        height: "100%",
+        display: "block",
+        // margin: "auto",
+        // position: "relative",
+    }} />;
+
+
+    //     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    //     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    //     sans-serif;
+    // -webkit-font-smoothing: antialiased;
+    // text-align: center;
+    // color: white;
+    // cursor: move;
+    // width: 100%;
+    // height: 100%;
+    // display: block;
+
+
+    // font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    // "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    // sans-serif;
+    // -webkit-font-smoothing: antialiased;
+    // text-align: center;
+    // color: black;
+    // cursor: move;
+    // width: 100%;
+    // height: 100%;
+    // display: block;
+
+
+
+
+
+
+    if (check) {
+        piece = <TransitionToSolidColor
+            style={{
+                // textAlign: "center",
+                // position: "relative",
+                // width: "100%",
+                // height: "100%",
+                display: "block",
+                // margin: "auto",
+            }}
+            imgSrc={src}></TransitionToSolidColor>;
+    }
 
     return (
         <Draggable item={{ type: ItemTypes.CHESS_PIECE, coordinates: props.coordinates }} >
             <div
                 style={{
-                    fontSize: 25,
-                    fontWeight: "bold",
+                    // fontSize: 25,
+                    // fontWeight: "bold",
                     cursor: "move",
                 }}
             >
