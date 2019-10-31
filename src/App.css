@@ -29,3 +29,12 @@
       border: 1px solid gray;
       margin: 5px;
 }
+.row {
+  display: flex; 
+  margin: 20px;
+}
+
+.col {
+  flex: 1;
+  margin: 20px;
+}
