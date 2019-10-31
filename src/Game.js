@@ -6,10 +6,8 @@ const chess = new Chess();
 
 // The current board state.
 let board = chess.board();
-
-// observer represents the root react element to be rerendered when the board state changes.
-// (or on a canceled drag)
-
+let turn = "w";
+let check = false;
 
 // This function generates a random move and plays it.
 export function makeRandomMove() {
@@ -24,7 +22,7 @@ export function makeRandomMove() {
     }
 }
 
-// This function checks if a move is legal. (Still needs to be done)
+// This function checks if a move is legal.
 
 export function isLegalMove(fromSquare, toSquare) {
     const tempChess = new Chess(chess.fen());
@@ -54,6 +52,8 @@ export function makeMove(fromSquare, toSquare, promotion) {
     // }
     chess.move({ from: prevSquare, to: newSquare, promotion });
     board = chess.board();
+    turn = chess.turn();
+    check = chess.in_check();
     emitChange();
 }
 
@@ -99,7 +99,7 @@ function convertToChessNotation(coordinates) {
 
 // For every change on board state update store.
 function emitChange() {
-    store.dispatch(boardUpdate(board));
+    store.dispatch(boardUpdate(board, turn, check));
 }
 
 // For our initial board state.

@@ -20,7 +20,9 @@ import { TransitionToSolidColor, GlowEffect } from "./Shaders";
 function ChessPiece(props) {
     let src;
     let alt;
-    let check = false;
+    let check = props.check;
+    let turn = props.turn;
+    let displayKingInCheck = false;
     let dragOnLegalSquare = false;
 
     if (props.piece.color === "w") {
@@ -48,7 +50,9 @@ function ChessPiece(props) {
             case "k":
                 src = WhiteKing;
                 alt = "white king";
-                check = true;
+                if (check && turn === "w") {
+                    displayKingInCheck = true;
+                }
                 break;
             default:
         }
@@ -77,7 +81,9 @@ function ChessPiece(props) {
             case "k":
                 src = BlackKing;
                 alt = "black king";
-                dragOnLegalSquare = true;
+                if (check && turn === "b") {
+                    displayKingInCheck = true;
+                }
                 break;
             default:
         }
@@ -92,7 +98,7 @@ function ChessPiece(props) {
         // position: "relative",
     }} />;
 
-    if (check) {
+    if (displayKingInCheck) {
         piece = <TransitionToSolidColor
             style={{
                 display: "block",

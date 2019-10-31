@@ -30,7 +30,7 @@ class DraggableItem {
         this.dragMouseDown = this.dragMouseDown.bind(this);
         this.elementDrag = this.elementDrag.bind(this);
         this.closeDragElement = this.closeDragElement.bind(this);
-        this.promotionPopUp = store.getState().promotionPopUp
+        this.promotionPopUp = store.getState().promotionPopUp;
     }
 
     // This function will be set to the reference of the draggable node to be run on mounting.

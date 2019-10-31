@@ -58,9 +58,11 @@ export const dragEnd = () => ({
 // });
 
 // chessBoard - the current state of the chess game.
-export const boardUpdate = chessBoard => ({
+export const boardUpdate = (chessBoard, turn, check) => ({
   type: BOARD_UPDATE,
   chessBoard,
+  turn,
+  check
 });
 
 export const promote = (from = [], to = []) => ({
@@ -82,6 +84,8 @@ for (let x = 0; x < 8; x++) {
 // setting up initial redux state
 const initialState = {
   chessBoard,
+  turn: "",
+  check: false,
   draggedItem: { coordinates: [] },
   // I'm not sure if the next two lines are necessary
   dragIsOver: { coordinates: [], x: -1, y: -1 },
@@ -124,6 +128,8 @@ const reducer = (prevState = initialState, action) => {
       return {
         ...prevState,
         chessBoard: action.chessBoard,
+        turn: action.turn,
+        check: action.check
       };
     case PROMOTE:
       return {

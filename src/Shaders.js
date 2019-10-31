@@ -151,8 +151,8 @@ class Effect extends React.Component {
         this.drawCanvasFrame(this.state.currentFrame);
 
         const intervalID = setInterval(
-            (function(self) {         //Self-executing func which takes 'this' as self
-                return function() {   //Return a function in the context of 'self'
+            (function (self) {         //Self-executing func which takes 'this' as self
+                return function () {   //Return a function in the context of 'self'
                     try {
                         const s = self.state;
                         if (s.currentDirection === INCREMENTING) {
@@ -234,7 +234,7 @@ export function DisplayAsSolidColor(props) {
             arg = [255, 0, 0];
             break;
         case "yellow":
-            arg = [255, 255, 0];
+            arg = [255, 165, 0];
             break;
         case "blue":
             arg = [0, 0, 255];
