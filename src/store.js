@@ -63,10 +63,10 @@ export const boardUpdate = chessBoard => ({
   chessBoard,
 });
 
-export const promote = (from = [], to = []) => ({
-    type: PROMOTE,
-    from: from,
-    to: to
+export const promote = (from = [], to = []) => ({
+  type: PROMOTE,
+  from: from,
+  to: to
 });
 
 // setting up an initial chessboard state
@@ -126,9 +126,10 @@ const reducer = (prevState = initialState, action) => {
         chessBoard: action.chessBoard,
       };
     case PROMOTE:
-        return {
-          ...prevState, 
-          promotion: {...prevState.promotion, popUp: !prevState.promotion.popUp, from: action.from, to: action.to}}
+      return {
+        ...prevState,
+        promotion: { ...prevState.promotion, popUp: !prevState.promotion.popUp, from: action.from, to: action.to }
+      };
     default:
       return prevState;
   }

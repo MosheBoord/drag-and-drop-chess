@@ -5,6 +5,9 @@ import { ItemTypes } from "./Constants";
 import { DropSurface, over } from "./DragNDrop";
 import Overlay from "./Overlay";
 import { connect } from "react-redux";
+import { DisplayAsSolidColor, GlowEffect } from "./Shaders";
+
+import OverlayBorder from "./chessImages/OverlayBorder.png";
 
 function BoardSquare(props) {
     const black = (props.x + props.y) % 2 === 1;
@@ -25,7 +28,7 @@ function BoardSquare(props) {
     } else if (!isOver && canDrop) {
         overlay = <Overlay color="yellow" opacity={.8} />;
     } else if (isOver && canDrop) {
-        overlay = <Overlay color="Aqua" opacity={.8} p />;
+        overlay = <Overlay color="aqua" opacity={.8} p />;
     }
 
     return (

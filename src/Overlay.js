@@ -1,4 +1,8 @@
 import React from "react";
+import { DisplayAsSolidColor } from "./Shaders";
+
+import OverlayBorder from "./chessImages/OverlayBorder.png";
+
 const Overlay = ({ color, opacity = .5 }) => {
     return (
         <div
@@ -10,9 +14,15 @@ const Overlay = ({ color, opacity = .5 }) => {
                 width: "100%",
                 zIndex: 1,
                 opacity,
-                backgroundColor: color,
+                // backgroundColor: color,
             }}
-        />
+
+        >
+            <DisplayAsSolidColor style={{
+                display: "block",
+            }}
+                imgSrc={OverlayBorder} color={color}></DisplayAsSolidColor>
+        </div>
     );
 };
 export default Overlay;

@@ -6,13 +6,15 @@ import Board from "./Board";
 // import { makeRandomMove } from "./Game";
 import { Provider } from "react-redux";
 import store from "./store";
-import './App.css'
-import Promotion from './Promotion'
+import "./App.css";
+import Promotion from "./Promotion";
+import PreLoadImages from "./PreLoadImages";
 // import PromotionDialog from "./PromotionDialog";
 
 ReactDOM.render(
     (
         <Provider store={store}>
+            <PreLoadImages />
             <div className="row">
 
                 <div className="col">
@@ -22,8 +24,6 @@ ReactDOM.render(
                     <Promotion />
                 </div>
             </div>
-
-            <Board />
             {/* <PromotionDialog></PromotionDialog> */}
         </Provider>
     )

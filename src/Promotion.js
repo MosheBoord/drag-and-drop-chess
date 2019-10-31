@@ -1,36 +1,36 @@
 import React from "react";
 import { connect } from "react-redux";
-import "./App.css"
-import { promote } from './store'
-import { makeMove } from "./Game"
+import "./App.css";
+import { promote } from "./store";
+import { makeMove } from "./Game";
 
 class Promotion extends React.Component {
-    constructor(){
-        super()
+    constructor() {
+        super();
         this.state = {
             selected: ""
-        }
-        this.updateState = this.updateState.bind(this)
-        this.submit = this.submit.bind(this)
+        };
+        this.updateState = this.updateState.bind(this);
+        this.submit = this.submit.bind(this);
     }
 
-    updateState(event){
-        console.log(event)
+    updateState(event) {
+        console.log(event);
         this.setState({
-            [event.target.name] : event.target.value
-        })
+            [event.target.name]: event.target.value
+        });
     }
 
-    submit(event){
-        event.preventDefault()
-        const { from, to } = this.props.promotion
-        this.props.promote(promote(from, to))
-        makeMove(from, to, this.state.selected)
+    submit(event) {
+        event.preventDefault();
+        const { from, to } = this.props.promotion;
+        this.props.promote(promote(from, to));
+        makeMove(from, to, this.state.selected);
     }
 
-    render(){
-        if (!this.props.promotion.popUp){
-            return <div></div>
+    render() {
+        if (!this.props.promotion.popUp) {
+            return <div></div>;
         }
         return (
             <div>
@@ -40,7 +40,7 @@ class Promotion extends React.Component {
                         <li className='input-field' >
                             <div>
                                 <label>Promotion</label>
-                                <select defaultValue={'default'} id='selectPromotion' className='browser-default' name='selected' onChange={this.updateState}>
+                                <select defaultValue={"default"} id='selectPromotion' className='browser-default' name='selected' onChange={this.updateState}>
                                     <option disabled value='default'>Choose a Promotion</option>
                                     <option value="q">queen</option>
                                     <option value="n">knight</option>
@@ -55,8 +55,8 @@ class Promotion extends React.Component {
                     </ul>
                 </form>
             </div>
-        )
-    } 
+        );
+    }
 }
 
 const mapStateToProps = state => ({
@@ -65,7 +65,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
     promote: (from, to) => dispatch(promote(from, to))
-})
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(Promotion);
 
