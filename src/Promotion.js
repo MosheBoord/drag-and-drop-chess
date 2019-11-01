@@ -29,7 +29,7 @@ class Promotion extends React.Component {
     }
 
     render() {
-        if (this.props.promotion.popUp) {
+        if (!this.props.promotion.popUp) {
             return <div></div>;
         }
         return (
