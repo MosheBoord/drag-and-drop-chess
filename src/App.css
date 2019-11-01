@@ -52,7 +52,6 @@
   height: auto;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   border: solid black;
   border-width: 1px;
   margin: 30px;
@@ -78,7 +77,6 @@ button {
   cursor: pointer;
   overflow: auto;
   min-width: 40px;
-  border-radius: 0%;
 }
 
 .message {
@@ -86,4 +84,24 @@ button {
   color: green;
   font-weight: bold;
   text-align: center;
+}
+
+.buttonsContainer {
+  background-color: beige;
+  min-width: 200px;
+  padding: 12px 16px;
+  height: auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  border: solid black;
+  border-width: 1px;
+  margin: 30px;
+}
+
+.buttonsContainer, button {
+  color:beige;
+  padding: 15px 32px;
+  font-size: 20px;
+  cursor: pointer;
 }
