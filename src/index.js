@@ -10,6 +10,7 @@ import "./App.css";
 import Promotion from "./Promotion";
 import PreLoadImages from "./PreLoadImages";
 import Message from "./Message";
+import Buttons from "./Buttons";
 // import PromotionDialog from "./PromotionDialog";
 
 ReactDOM.render(
@@ -22,6 +23,7 @@ ReactDOM.render(
                     <Board />
                 </div>
                 <div className='col'>
+                    <Buttons />
                     <Message />
                     <Promotion />
                 </div>

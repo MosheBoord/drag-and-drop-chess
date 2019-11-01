@@ -58,11 +58,12 @@ export const dragEnd = () => ({
 // });
 
 // chessBoard - the current state of the chess game.
-export const boardUpdate = (chessBoard, turn, check) => ({
+export const boardUpdate = (chessBoard, turn, check, checkMate) => ({
   type: BOARD_UPDATE,
   chessBoard,
   turn,
-  check
+  check,
+  checkMate
 });
 
 export const promote = (from = [], to = []) => ({
@@ -86,6 +87,7 @@ const initialState = {
   chessBoard,
   turn: "",
   check: false,
+  checkMate: false,
   draggedItem: { coordinates: [] },
   // I'm not sure if the next two lines are necessary
   dragIsOver: { coordinates: [], x: -1, y: -1 },
@@ -129,7 +131,8 @@ const reducer = (prevState = initialState, action) => {
         ...prevState,
         chessBoard: action.chessBoard,
         turn: action.turn,
-        check: action.check
+        check: action.check,
+        checkMate: action.checkMate
       };
     case PROMOTE:
       return {

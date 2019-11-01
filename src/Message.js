@@ -4,10 +4,14 @@ import { connect } from "react-redux";
 class Message extends React.Component {
     render (){
         let message;
-        if (this.props.check){
-            const winner = this.props.turn === "b" ? "black" : "white"
+        if (this.props.checkMate){
+            const winner = this.props.turn === "b" ? "White" : "Black";
             message = `Check Mate! ${winner} wins!`;
         } 
+        else if (this.props.check) {
+            const player = this.props.turn === "b" ? "black" : "white";
+            message = `It's your turn, ${player}! Watch out, your are in check!`;
+        }
         else if (this.props.turn === 'w') message = "It's your turn, white!";
         else if (this.props.turn === 'b') message = "It's your turn, black!";
         else message = null;
@@ -23,6 +27,7 @@ class Message extends React.Component {
 const mapStateToProps = state => ({
     turn: state.turn,
     check: state.check,
+    checkMate: state.checkMate,
     promote: state.promotion.popUp
 })
 
