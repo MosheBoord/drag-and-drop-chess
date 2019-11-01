@@ -8,6 +8,7 @@ const chess = new Chess();
 let board = chess.board();
 let turn = "w";
 let check = false;
+let checkMate = false;
 
 // This function generates a random move and plays it.
 export function makeRandomMove() {
@@ -54,6 +55,7 @@ export function makeMove(fromSquare, toSquare, promotion) {
     board = chess.board();
     turn = chess.turn();
     check = chess.in_check();
+    checkMate = chess.in_checkmate()
     emitChange();
 }
 
@@ -99,7 +101,7 @@ function convertToChessNotation(coordinates) {
 
 // For every change on board state update store.
 function emitChange() {
-    store.dispatch(boardUpdate(board, turn, check));
+    store.dispatch(boardUpdate(board, turn, check, checkMate));
 }
 
 // For our initial board state.
