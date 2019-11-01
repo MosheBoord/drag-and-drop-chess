@@ -78,6 +78,7 @@ button {
   cursor: pointer;
   overflow: auto;
   min-width: 40px;
+  border-radius: 0%;
 }
 
 .message {

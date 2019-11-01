@@ -5,7 +5,7 @@ class Message extends React.Component {
     render (){
         let message;
         if (this.props.checkMate){
-            const winner = this.props.turn === "b" ? "black" : "white";
+            const winner = this.props.turn === "b" ? "White" : "Black";
             message = `Check Mate! ${winner} wins!`;
         } 
         else if (this.props.check) {
