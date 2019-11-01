@@ -1,25 +1,19 @@
 import React from "react";
-import { ImageDataToPixelGrid } from "./helperFunctions";
+import { ImageDataToPixelGrid, pixelArrayToObject, pixelGridToImageData } from "./helperFunctions";
 
 const INCREMENTING = "INCREMENTING";
 const DECREMENTING = "DECREMENTING";
 
-// const ORIGINAL_PIXEL = "ORIGINAL_PIXEL";
-// const   
-
 class Filters {
     getPixels(img) {
-        // console.log("img", img);
-        // console.log(img.width, img.height);
-        var imgWidth = img.width || img.naturalWidth;
-        var imgHeight = img.height || img.naturalHeight;
-        // console.log(imgWidth, imgHeight);
+        let imgWidth = img.width || img.naturalWidth;
+        let imgHeight = img.height || img.naturalHeight;
         let c = this.getCanvas(imgWidth, imgHeight);
         let ctx = c.getContext("2d");
         ctx.drawImage(img, 0, 0);
-        // console.log(c);
-        return ctx.getImageData(0, 0, c.width, c.height);
-
+        const id = ctx.getImageData(0, 0, c.width, c.height);
+        // console.log(id);
+        return id;
     }
 
     getCanvas(w, h) {
@@ -35,6 +29,7 @@ class Filters {
     }
 
     transitionToSolidColor(pixels, originalWeight, newWeight) {
+        // console.log(pixels);
         let d = pixels.data;
         for (let i = 0; i < d.length; i += 4) {
             let r = d[i];
@@ -60,83 +55,112 @@ class Filters {
         return pixels;
     }
 
-    glow(pixels, originalWeight, newWeight, glowAmount = 3) {
-        const canvasWidth = pixels.width;
-        // const getColorIndicesForCoord = (x, y, width) => {
-        //     const red = y * (width * 4) + x * 4;
-        //     return [red, red + 1, red + 2, red + 3];
-        // };
-        const getAlphaForCoord = (x, y, width) => {
-            const alpha = (y * (width * 4) + x * 4) + 3;
-            return alpha;
-        };
+    glow(pixels, originalWeight, newWeight) {
+        // console.log(pixels);
+        // const pixelGrid = ImageDataToPixelGrid(pixels);
 
-        // let pixelGrid = ImageDataToPixelGrid(pixels);
+        function addGlowLayer() {
+            const d = pixels.data;
+            const pGrid = [];
+            const alphaThreshhold = (255 / 2);
+            for (let y = 0; y < pixels.height; y++) {
+                const pRow = [];
+                for (let x = 0; x < pixels.width; x++) {
+                    let index = y * pixels.width + x;
+                    // The plus 3 is to find the alpha value of the pixel.
+                    if (d[index + 3] < alphaThreshhold) {
+                        let pixelUp;
+                        let pixelDown;
+                        let pixelLeft;
+                        let pixelRight;
 
-        // for (let y = 0; y < pixels.height; y++) {
-        //     pixelGrid.push([]);
-        // }
+                        if (x === 0) {
+                            pixelLeft = false;
+                            // The plus 7 is too shift one pixel over to the right and find it's alpha value.
+                            pixelRight = d[index + 7] > alphaThreshhold;
+                        } else if (x === pixels.width) {
+                            pixelRight = false;
+                            // The minus 1 is too shift to pixel on left alpha value.
+                            pixelLeft = d[index - 1] > alphaThreshhold;
+                        } else {
+                            pixelLeft = d[index - 1] > alphaThreshhold;
+                            pixelRight = d[index + 7] > alphaThreshhold;
+                        }
 
+                        if (y === 0) {
+                            pixelUp = false;
+                            pixelDown = d[index + pixels.width * 4 + 3] > alphaThreshhold;
+                        } else if (y === pixels.height) {
+                            pixelDown = false;
+                            pixelUp = d[index - pixels.width * 4 - 1] > alphaThreshhold;
+                        } else {
+                            pixelDown = d[index + pixels.width * 4 + 3] > alphaThreshhold;
+                            pixelUp = d[index - pixels.width * 4 - 1] > alphaThreshhold;
+                        }
 
-        // for (let y = 0; y < pixels.height; y++) {
-        //     for (let x = 0; pixels.width; x++) {
-        //         const currentPixel = getAlphaForCoord(x, y, canvasWidth);
-        //         let pixelUp, pixelDown, pixelLeft, pixelRight;
+                        if (pixelUp || pixelDown || pixelLeft || pixelRight) {
+                            pRow.push(true);
+                        } else {
+                            pRow.push(false);
+                        }
+                    } else {
+                        pRow.push(false);
+                    }
+                }
+                pGrid.push(pRow);
+            }
 
-        //         if (y - 1 === -1) {
-        //             pixelUp = 0;
-        //         } else if (y + 1 === pixels.height) {
-        //             pixelDown = 0;
-        //         }
-        //         if (x - 1 === -1) {
-        //             pixelLeft = 0;
-        //         } else if (x + 1 === pixels.width) {
-        //             pixelRight = 0;
-        //         }
-
-        //         if (pixelUp !== 0) {
-        //             pixelUp = getAlphaForCoord(x, y - 1, canvasWidth);
-        //         }
-        //         if (pixelDown !== 0) {
-        //             pixelDown = getAlphaForCoord(x, y + 1, canvasWidth);
-        //         }
-        //         if (pixelLeft !== 0) {
-        //             pixelLeft = getAlphaForCoord(x - 1, y, canvasWidth);
-        //         }
-        //         if (pixelRight !== 0) {
-        //             pixelRight = getAlphaForCoord(x + 1, y, canvasWidth);
-        //         }
-        //         if (!currentPixel) {
-        //             if (pixelUp || pixelDown || pixelLeft || pixelRight) {
-        //                 pixelGrid[y][x] = 1;
-        //             }
-        //         }
-        //     }
-        // }
-
-        let d = pixels.data;
-        // for (let i = 0; i < d.length; i += 4) {
-        //     let r = d[i];
-        //     let g = d[i + 1];
-        //     let b = d[i + 2];
-        // }
+            // console.log("pgrid", pGrid);
 
 
-
-        for (let i = 0; i < d.length; i += 4) {
-            let r = d[i];
-            let g = d[i + 1];
-            let b = d[i + 2];
-            // d[i] = (r * originalWeight) + (0 * newWeight);
-            // d[i + 1] = (g * originalWeight) + (255 * newWeight);
-            // d[i + 2] = (b * originalWeight) + (255 * newWeight);
-            d[i] = (r * originalWeight) + ((255 - r) * newWeight);
-            d[i + 1] = (g * originalWeight) + ((255 - r) * newWeight);
-            d[i + 2] = (b * originalWeight) + ((255 - r) * newWeight);
-            // d[i] = 255 - r;
-            // d[i + 1] = 255 - g;
-            // d[i + 2] = 255 - b;
+            for (let y = 0; y < pixels.height; y++) {
+                for (let x = 0; x < pixels.width; x++) {
+                    let index = y * pixels.width + x;
+                    if (pGrid[y][x]) {
+                        console.log("y, x", y, x);
+                        // d[index] = 255;
+                        // d[index + 1] = 0;
+                        // d[index + 2] = 0;
+                        // d[index + 3] = 255;
+                    }
+                }
+            }
         }
+
+        // addGlowLayer();
+        // addGlowLayer();
+        // addGlowLayer();
+        // addGlowLayer();
+        // addGlowLayer();
+        // addGlowLayer();
+        // addGlowLayer();
+        // addGlowLayer();
+        // addGlowLayer();
+        // addGlowLayer();
+        // addGlowLayer();
+        // addGlowLayer();
+        // addGlowLayer();
+        // addGlowLayer();
+        // addGlowLayer();
+        // addGlowLayer();
+        // addGlowLayer();
+        // addGlowLayer();
+        // addGlowLayer();
+        // addGlowLayer();
+        // addGlowLayer();
+        // for (let i = 0; i < 50; i++) {
+        //     addGlowLayer();
+        // }
+        const d = pixels.data;
+        for (let i = 0; i < d.length; i++) {
+            const rand = Math.floor(Math.random() * 255);
+            // if (d[i] > 0) {
+            //     d[i] = Math.floor((d[i]) / (rand));
+            //     console.log(rand);
+            // }
+        }
+
+
         return pixels;
     }
 }
@@ -180,17 +204,17 @@ class Effect extends React.Component {
                     }
                 };
             })(this),
-            10     //normal interval, 'this' scope not impacted here.
+            500     //normal interval, 'this' scope not impacted here.
         );
-        this.intervalID = intervalID;
+        this.intervalID = intervalID;// real time delay is 10
     }
 
     drawCanvasFrame(frameCount) {
         const canvas = this.canvas;
         const ctx = canvas.getContext("2d");
         const img = this.img;
-        // console.log("constructor img", img.width);
-        // console.log(img);
+
+        // console.log(this.img);
         canvas.width = img.width;
         canvas.height = img.height;
 
@@ -217,7 +241,7 @@ class Effect extends React.Component {
                         height: "100%",
                         display: "block"
                     }} />
-                < img ref={(image) => this.img = image} onLoad={this.imgLoaded} src={this.props.imgSrc} style={{ display: "none", width: "100%", height: "100%", margin: 0 }} />
+                < img ref={(image) => this.img = image} onLoad={() => this.imgLoaded = true} src={this.props.imgSrc} style={{ display: "none", width: "100%", height: "100%", margin: 0 }} />
             </>
         );
     }

@@ -4,7 +4,8 @@ import BlackPawn from "./chessImages/bP.png";
 import BlackRook from "./chessImages/bR.png";
 import BlackKnight from "./chessImages/bN.png";
 import BlackBishop from "./chessImages/bB.png";
-import BlackQueen from "./chessImages/bQ.png";
+// import BlackQueen from "./chessImages/bQ.png";
+import BlackQueen from "./chessImages/2x3.png";
 import BlackKing from "./chessImages/bK.png";
 import WhitePawn from "./chessImages/wP.png";
 import WhiteRook from "./chessImages/wR.png";
@@ -24,6 +25,7 @@ function ChessPiece(props) {
     let turn = props.turn;
     let displayKingInCheck = false;
     let dragOnLegalSquare = false;
+    let glow = false;
 
     if (props.piece.color === "w") {
         switch (props.piece.type) {
@@ -77,6 +79,7 @@ function ChessPiece(props) {
             case "q":
                 src = BlackQueen;
                 alt = "black queen";
+                glow = true;
                 break;
             case "k":
                 src = BlackKing;
@@ -90,12 +93,9 @@ function ChessPiece(props) {
     }
 
     let piece = < img src={src} alt={alt} style={{
-        // textAlign: "center",
         width: "100%",
         height: "100%",
         display: "block",
-        // margin: "auto",
-        // position: "relative",
     }} />;
 
     if (displayKingInCheck) {
@@ -107,6 +107,14 @@ function ChessPiece(props) {
     }
 
     if (dragOnLegalSquare) {
+        piece = <GlowEffect
+            style={{
+                display: "block",
+            }}
+            imgSrc={src}></GlowEffect>;
+    }
+
+    if (glow) {
         piece = <GlowEffect
             style={{
                 display: "block",

@@ -5,7 +5,7 @@ import { ItemTypes } from "./Constants";
 import { DropSurface, over } from "./DragNDrop";
 import Overlay from "./Overlay";
 import { connect } from "react-redux";
-import { DisplayAsSolidColor, GlowEffect } from "./Shaders";
+// import { DisplayAsSolidColor, GlowEffect } from "./Shaders";
 
 import OverlayBorder from "./chessImages/OverlayBorder.png";
 
