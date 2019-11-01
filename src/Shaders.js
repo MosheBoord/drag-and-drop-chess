@@ -35,9 +35,12 @@ class Filters {
             let r = d[i];
             let g = d[i + 1];
             let b = d[i + 2];
-            d[i] = (r * originalWeight) + (255 * newWeight);
+            let a = d[i + 3];
+            // d[i] = (r * originalWeight) + (255 * newWeight);
+            d[i] = (r * .25) + (255 * .75);
             d[i + 1] = (g * originalWeight) + (0 * newWeight);
             d[i + 2] = (b * originalWeight) + (0 * newWeight);
+            d[i + 3] = (a * originalWeight) + (0 * newWeight);
         }
         return pixels;
     }
@@ -175,8 +178,8 @@ class Effect extends React.Component {
         this.drawCanvasFrame(this.state.currentFrame);
 
         const intervalID = setInterval(
-            (function (self) {         //Self-executing func which takes 'this' as self
-                return function () {   //Return a function in the context of 'self'
+            (function(self) {         //Self-executing func which takes 'this' as self
+                return function() {   //Return a function in the context of 'self'
                     try {
                         const s = self.state;
                         if (s.currentDirection === INCREMENTING) {
@@ -185,7 +188,7 @@ class Effect extends React.Component {
                             self.state.currentFrame--;
                         }
                         //Thing you wanted to run as non-window 'this'
-                        if (s.currentFrame === 75) {
+                        if (s.currentFrame === 100) {
                             // s.currentFrame = 100;
                             s.currentDirection = DECREMENTING;
                         } else if (s.currentFrame === 10) {
@@ -204,7 +207,7 @@ class Effect extends React.Component {
                     }
                 };
             })(this),
-            500     //normal interval, 'this' scope not impacted here.
+            6     //normal interval, 'this' scope not impacted here.
         );
         this.intervalID = intervalID;// real time delay is 10
     }
