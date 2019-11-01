@@ -33,27 +33,17 @@ class Promotion extends React.Component {
             return <div></div>;
         }
         return (
-            <div>
-                <h3>Choose a Pomotion</h3>
-                <form>
-                    <ul>
-                        <li className='input-field' >
-                            <div>
-                                <label>Promotion</label>
-                                <select defaultValue={"default"} id='selectPromotion' className='browser-default' name='selected' onChange={this.updateState}>
-                                    <option disabled value='default'>Choose a Promotion</option>
-                                    <option value="q">queen</option>
-                                    <option value="n">knight</option>
-                                    <option value="b">bishop</option>
-                                    <option value="r">rook</option>
-                                </select>
-                            </div>
-                        </li>
-                        <li>
-                            <button className='waves-effect waves-light btn-large' onClick={this.submit}>Submit</button>
-                        </li>
-                    </ul>
-                </form>
+            <div className='promotionDialog'>
+                <h3 className="header">Choose a Promotion</h3>
+                    <div className='input-field'>
+                        <select id='selectPromotion' name='selected' onChange={this.updateState}>
+                            <option className="dropdown-content" value="q">queen</option>
+                            <option className="dropdown-content" value="n">knight</option>
+                            <option className="dropdown-content" value="b">bishop</option>
+                            <option className="dropdown-content" value="r">rook</option>
+                        </select>
+                    </div>
+                    <button onClick={this.submit}>Submit</button>
             </div>
         );
     }
