@@ -38,3 +38,44 @@
   flex: 1;
   margin: 20px;
 }
+
+.header {
+  color: green;
+  font-size: 20px;
+
+}
+
+.promotionDialog {
+  background-color: beige;
+  min-width: 200px;
+  padding: 12px 16px;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border: solid black;
+  border-width: 1px;
+}
+
+button {
+  background-color: green;
+  color: beige;
+  padding: 15px 32px;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.input-field{
+  align-self: center;
+  padding: 20px;
+}
+
+#selectPromotion {
+  background-color: green;
+  color: beige;
+  font-size: 20px;
+  cursor: pointer;
+  overflow: auto;
+  min-width: 40px;
+}
+
