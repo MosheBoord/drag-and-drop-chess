@@ -8,7 +8,7 @@ class Promotion extends React.Component {
     constructor() {
         super();
         this.state = {
-            selected: ""
+            selected: "q"
         };
         this.updateState = this.updateState.bind(this);
         this.submit = this.submit.bind(this);
@@ -33,7 +33,7 @@ class Promotion extends React.Component {
             return <div></div>;
         }
         return (
-            <div className='promotionDialog'>
+            <div className='messageContainer'>
                 <h3 className="header">Choose a Promotion</h3>
                     <div className='input-field'>
                         <select id='selectPromotion' name='selected' onChange={this.updateState}>

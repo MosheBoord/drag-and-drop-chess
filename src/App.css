@@ -45,7 +45,7 @@
 
 }
 
-.promotionDialog {
+.messageContainer {
   background-color: beige;
   min-width: 200px;
   padding: 12px 16px;
@@ -55,6 +55,7 @@
   justify-content: center;
   border: solid black;
   border-width: 1px;
+  margin: 30px;
 }
 
 button {
@@ -77,4 +78,11 @@ button {
   cursor: pointer;
   overflow: auto;
   min-width: 40px;
+}
+
+.message {
+  font-size: 20px;
+  color: green;
+  font-weight: bold;
+  text-align: center;
 }
