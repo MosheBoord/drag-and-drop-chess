@@ -56,6 +56,8 @@ class DraggableItem {
         this.startingTopPosition = this.el.offsetTop;
         this.startingLeftPosition = this.el.offsetLeft;
 
+        this.el.style.zIndex = 9999;
+
         // I think this is old code.
         // get intitial color for reverting on cancel drag
         this.color = this.el.style.color;
@@ -103,6 +105,8 @@ class DraggableItem {
         for (let i = 0; i < dragAndDropManager.dropSurfaces.length; i++) {
             dragAndDropManager.dropSurfaces[i].canDrop(null, false);
         }
+
+        this.el.style.zIndex = null;
 
         // stop moving when mouse button is released:
         document.onmouseup = null;
@@ -216,7 +220,7 @@ export class Draggable extends React.Component {
                 ref={refFunc}
                 style={{
                     position: "absolute",
-                    zIndex: 9999,
+                    // zIndex: 9999,
                     width: "100%",
                     height: "100%",
                 }}
