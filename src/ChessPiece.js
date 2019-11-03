@@ -27,6 +27,11 @@ function ChessPiece(props) {
     let dragOnLegalSquare = false;
     let glow = false;
 
+    let draggable = true;
+    if (turn !== props.piece.color) {
+        draggable = false;
+    }
+
     if (props.piece.color === "w") {
         switch (props.piece.type) {
             case "p":
@@ -122,17 +127,34 @@ function ChessPiece(props) {
             imgSrc={src}></GlowEffect>;
     }
 
-    return (
-        <Draggable item={{ type: ItemTypes.CHESS_PIECE, coordinates: props.coordinates }} >
+    if (draggable) {
+        return (
+            <Draggable item={{ type: ItemTypes.CHESS_PIECE, coordinates: props.coordinates }} >
+                <div
+                    style={{
+                        cursor: "move",
+                    }}
+                >
+                    {piece}
+                </div>
+            </Draggable>
+        );
+    } else {
+        return (
             <div
-                style={{
-                    cursor: "move",
+                // onDragStart={() => false}
+                // the following line just prevents the user from dragging the img
+                ref={(el) => {
+                    if (el) {
+                        el.ondragstart = () => false;
+                    }
                 }}
             >
                 {piece}
             </div>
-        </Draggable>
-    );
+        );
+    }
+
 }
 
 export default ChessPiece;
