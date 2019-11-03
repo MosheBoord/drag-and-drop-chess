@@ -28,7 +28,7 @@ function ChessPiece(props) {
     let glow = false;
 
     let draggable = true;
-    if (turn !== props.piece.color) {
+    if (turn !== props.piece.color || props.checkMate) {
         draggable = false;
     }
 
