@@ -14,10 +14,10 @@ export const undo = () => {
     chess.undo();
     turn = chess.turn();
     check = chess.in_check();
-    checkMate = chess.in_checkmate()
+    checkMate = chess.in_checkmate();
     board = chess.board();
     emitChange();
-}
+};
 
 export const reset = () => {
     chess.reset();
@@ -26,7 +26,7 @@ export const reset = () => {
     checkMate = false;
     board = chess.board();
     emitChange();
-}
+};
 
 // This function generates a random move and plays it.
 export function makeRandomMove() {
@@ -37,7 +37,7 @@ export function makeRandomMove() {
         board = chess.board();
         emitChange();
     } else {
-        chess.reset();
+        // chess.reset();
     }
 }
 
@@ -53,10 +53,13 @@ export function isLegalMove(fromSquare, toSquare) {
 
 // This function makes a move. By default on promotion is queen.
 export function checkPromotion(fromSquare, toSquare) {
+    if (!isLegalMove(fromSquare, toSquare)) {
+        return false;
+    }
     const fromX = fromSquare[0];
     const fromY = fromSquare[1];
     const piece = board[fromY][fromX];
-    if (piece.type === "p" && toSquare[1] === 0) {
+    if (piece.type === "p" && (toSquare[1] === 0 || toSquare[1] === 7)) {
         return true;
     }
     return false;
@@ -70,7 +73,7 @@ export function makeMove(fromSquare, toSquare, promotion) {
     board = chess.board();
     turn = chess.turn();
     check = chess.in_check();
-    checkMate = chess.in_checkmate()
+    checkMate = chess.in_checkmate();
     emitChange();
 }
 

@@ -191,7 +191,7 @@ class Effect extends React.Component {
                         if (s.currentFrame === 100) {
                             // s.currentFrame = 100;
                             s.currentDirection = DECREMENTING;
-                        } else if (s.currentFrame === 10) {
+                        } else if (s.currentFrame === 0) {
                             // s.currentFrame = 0;
                             s.currentDirection = INCREMENTING;
                         }
