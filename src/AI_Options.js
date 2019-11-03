@@ -33,7 +33,7 @@ class AI_Options extends React.Component {
                     <select className='selectOption' name='selected' onChange={this.updateState}>
                         <option className="dropdown-content" value={PLAYER_VS_PLAYER}>Player VS Player</option>
                         <option className="dropdown-content" value={WHITE_VS_COMPUTER}>Play as White VS Computer</option>
-                        <option className="dropdown-content" value={BLACK_VS_COMPUTER}>Play as BLack VS Computer</option>
+                        <option className="dropdown-content" value={BLACK_VS_COMPUTER}>Play as Black VS Computer</option>
                     </select>
                 </div>
                 {/* <button onClick={this.submit}>Submit</button> */}
