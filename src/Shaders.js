@@ -62,14 +62,14 @@ class Filters {
         // console.log(pixels);
         // const pixelGrid = ImageDataToPixelGrid(pixels);
 
-        function addGlowLayer() {
+        function addGlowLayer(alphaValue) {
             const d = pixels.data;
             const pGrid = [];
             const alphaThreshhold = (255 / 2);
             for (let y = 0; y < pixels.height; y++) {
                 const pRow = [];
                 for (let x = 0; x < pixels.width; x++) {
-                    let index = y * pixels.width + x;
+                    let index = (y * pixels.width * 4) + (x * 4);
                     // The plus 3 is to find the alpha value of the pixel.
                     if (d[index + 3] < alphaThreshhold) {
                         let pixelUp;
@@ -113,18 +113,16 @@ class Filters {
                 pGrid.push(pRow);
             }
 
-            // console.log("pgrid", pGrid);
 
 
             for (let y = 0; y < pixels.height; y++) {
                 for (let x = 0; x < pixels.width; x++) {
-                    let index = y * pixels.width + x;
+                    let index = (y * pixels.width * 4) + (x * 4);
                     if (pGrid[y][x]) {
-                        console.log("y, x", y, x);
-                        // d[index] = 255;
-                        // d[index + 1] = 0;
-                        // d[index + 2] = 0;
-                        // d[index + 3] = 255;
+                        d[index] = 255;
+                        d[index + 1] = 0;
+                        d[index + 2] = 0;
+                        d[index + 3] = alphaValue;
                     }
                 }
             }
@@ -146,22 +144,22 @@ class Filters {
         // addGlowLayer();
         // addGlowLayer();
         // addGlowLayer();
-        // addGlowLayer();
-        // addGlowLayer();
-        // addGlowLayer();
-        // addGlowLayer();
-        // addGlowLayer();
+        addGlowLayer(255);
+        addGlowLayer(200);
+        addGlowLayer(150);
+        addGlowLayer(100);
+        addGlowLayer(50);
         // for (let i = 0; i < 50; i++) {
         //     addGlowLayer();
         // }
-        const d = pixels.data;
-        for (let i = 0; i < d.length; i++) {
-            const rand = Math.floor(Math.random() * 255);
-            // if (d[i] > 0) {
-            //     d[i] = Math.floor((d[i]) / (rand));
-            //     console.log(rand);
-            // }
-        }
+        // const d = pixels.data;
+        // for (let i = 0; i < d.length; i++) {
+        //     const rand = Math.floor(Math.random() * 255);
+        //     // if (d[i] > 0) {
+        //     //     d[i] = Math.floor((d[i]) / (rand));
+        //     //     console.log(rand);
+        //     // }
+        // }
 
 
         return pixels;
@@ -276,4 +274,5 @@ export function DisplayAsSolidColor(props) {
 
 export function GlowEffect(props) {
     return <Effect {...props} effect={Filters.prototype.glow} />;
+    // return <Effect {...props} effect={Filters.prototype.displayAsSolidColor} args={[[255, 0, 0]]} />;
 }
