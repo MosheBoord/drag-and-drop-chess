@@ -24,9 +24,9 @@ ReactDOM.render(
                 </div>
                 <div className='col'>
                     <Buttons />
-                    <AI_Options />
-                    <Message />
                     <Promotion />
+                    <Message />
+                    <AI_Options />
                 </div>
             </div>
             {/* <PromotionDialog></PromotionDialog> */}
@@ -35,9 +35,9 @@ ReactDOM.render(
     , document.getElementById("root")
 );
 
-setInterval(() => {
-    // makeRandomMove();
-}, 750);
+// setInterval(() => {
+//     // makeRandomMove();
+// }, 750);
 
 // makeRandomMove();
 

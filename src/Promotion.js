@@ -15,7 +15,6 @@ class Promotion extends React.Component {
     }
 
     updateState(event) {
-        console.log(event);
         this.setState({
             [event.target.name]: event.target.value
         });
@@ -30,7 +29,7 @@ class Promotion extends React.Component {
 
     render() {
         if (!this.props.promotion.popUp) {
-            return <div></div>;
+            return null;
         }
         return (
             <div className='messageContainer'>

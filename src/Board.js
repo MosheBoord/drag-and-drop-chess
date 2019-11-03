@@ -4,22 +4,29 @@ import BoardSquare from "./BoardSquare";
 import { connect } from "react-redux";
 import "./App.css";
 import { pipelineTopicExpression } from "@babel/types";
-import { makeMove } from "./Game";
+import { makeRandomMove } from "./Game";
 import { PLAYER_VS_PLAYER, WHITE_VS_COMPUTER, BLACK_VS_COMPUTER } from "./store";
 
 const Board = props => {
-    const { playMode, turn } = props;
+    const { chessBoard, playMode, turn } = props;
     const squares = [];
     for (let i = 0; i < 64; i++) {
-        const square = renderSquare(i, props.chessBoard, props.check, turn, props.checkMate, playMode);
+        const square = renderSquare(i, chessBoard, props.check, turn, props.checkMate, playMode);
         squares.push(square);
     }
-
-    // if (playMode === WHITE_VS_COMPUTER && turn === "w") {
-
-    // } else if (playMode === BLACK_VS_COMPUTER && turn === "b") {
-    //     setTimeout(makeRandomMove, 5000);
-    // }
+    if (playMode === WHITE_VS_COMPUTER && turn === "b") {
+        setTimeout(() => {
+            if (turn === "b") {
+                makeRandomMove(chessBoard);
+            }
+        }, 1000);
+    } else if (playMode === BLACK_VS_COMPUTER && turn === "w") {
+        setTimeout(() => {
+            if (turn === "w") {
+                makeRandomMove(chessBoard);
+            }
+        }, 1000);
+    }
 
     return (
         <div className="board-container">

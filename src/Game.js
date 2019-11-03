@@ -9,6 +9,8 @@ let board = chess.board();
 let turn = "w";
 let check = false;
 let checkMate = false;
+// let previousBoard = chess.board;
+// let boardChanged = false;
 
 export const undo = () => {
     chess.undo();
@@ -28,17 +30,40 @@ export const reset = () => {
     emitChange();
 };
 
+// const checkBoardChanged(prevBoardState, newBoardState) {
+
+// }
+
 // This function generates a random move and plays it.
-export function makeRandomMove() {
-    if (!chess.game_over()) {
+export function makeRandomMove(boardState) {
+    if (boardStateChanged(boardState)) {
         const moves = chess.moves();
         const move = moves[Math.floor(Math.random() * moves.length)];
         chess.move(move);
+        turn = chess.turn();
         board = chess.board();
+        check = chess.in_check();
+        checkMate = chess.in_checkmate();
         emitChange();
-    } else {
-        // chess.reset();
     }
+}
+
+function boardStateChanged(oldBoardState) {
+    for (let y = 0; y < 8; y++) {
+        for (let x = 0; x < 8; x++) {
+            if (oldBoardState[y][x] === null && board[y][x] === null) {
+                continue;
+            } else if (oldBoardState[y][x] !== null && board[y][x] !== null) {
+                if (oldBoardState[y][x].piece !== board[y][x].piece ||
+                    oldBoardState[y][x].type !== board[y][x].type) {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        }
+    }
+    return true;
 }
 
 // This function checks if a move is legal.
