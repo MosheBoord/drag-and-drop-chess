@@ -1,5 +1,5 @@
 import React from "react";
-import OverlayBorder from "./chessImages/OverlayBorder.png";
+import OverlayBorder from "./chessImages/OverlayBorder2.png";
 import X3 from "./chessImages/2x3.png";
 
 export default function PreLoadImages() {

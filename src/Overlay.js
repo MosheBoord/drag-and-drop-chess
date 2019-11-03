@@ -1,7 +1,7 @@
 import React from "react";
 import { DisplayAsSolidColor } from "./Shaders";
 
-import OverlayBorder from "./chessImages/OverlayBorder.png";
+import OverlayBorder from "./chessImages/OverlayBorder2.png";
 
 const Overlay = ({ color, opacity = .5 }) => {
     return (

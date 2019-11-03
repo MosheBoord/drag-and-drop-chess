@@ -142,6 +142,12 @@ function ChessPiece(props) {
     } else {
         return (
             <div
+                style={{
+                    position: "absolute",
+                    zIndex: 4,
+                    width: "100%",
+                    height: "100%",
+                }}
                 // onDragStart={() => false}
                 // the following line just prevents the user from dragging the img
                 ref={(el) => {
