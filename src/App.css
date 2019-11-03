@@ -70,7 +70,7 @@ button {
   padding: 20px;
 }
 
-#selectPromotion {
+.selectOption {
   background-color: green;
   color: beige;
   font-size: 20px;

@@ -7,7 +7,7 @@ const logger = createLogger({
     // return ![ACTION_TYPE_ONE, ACTION_TYPE_TWO, ...].includes(action.type);
 
     // Return false if you don't want to log anything.
-    return false;
+    return true;
   }
 });
 
@@ -31,6 +31,14 @@ const DRAG_END = "DRAG_END";
 //const INITIATE_DROP = "INITIATE_DROP";
 
 const PROMOTE = "PROMOTE";
+
+// This action takes place when a player changes the game mode to one of the other three possible modes
+// Player vs Player, Play as white vs Computer, and Play as black vs Computer.
+const CHANGE_PLAY_MODE = "CHANGE_PLAY_MODE";
+// The three playmodes
+export const PLAYER_VS_PLAYER = "PLAYER_VS_PLAYER";
+export const WHITE_VS_COMPUTER = "WHITE_VS_COMPUTER";
+export const BLACK_VS_COMPUTER = "BLACK_VS_COMPUTER";
 
 //ACTION CREATORS
 
@@ -72,6 +80,11 @@ export const promote = (from = [], to = []) => ({
   to: to
 });
 
+export const changePlayMode = (playMode = PLAYER_VS_PLAYER) => ({
+  type: CHANGE_PLAY_MODE,
+  playMode
+});
+
 // setting up an initial chessboard state
 const chessBoard = [];
 for (let x = 0; x < 8; x++) {
@@ -97,7 +110,8 @@ const initialState = {
     value: "",
     from: [],
     to: []
-  }
+  },
+  playMode: PLAYER_VS_PLAYER
 };
 
 // all actions go through this reducer
@@ -138,6 +152,11 @@ const reducer = (prevState = initialState, action) => {
       return {
         ...prevState,
         promotion: { ...prevState.promotion, popUp: !prevState.promotion.popUp, from: action.from, to: action.to }
+      };
+    case CHANGE_PLAY_MODE:
+      return {
+        ...prevState,
+        playMode: action.playMode
       };
     default:
       return prevState;

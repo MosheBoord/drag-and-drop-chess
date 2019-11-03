@@ -12,18 +12,19 @@ import PreLoadImages from "./PreLoadImages";
 import Message from "./Message";
 import Buttons from "./Buttons";
 // import PromotionDialog from "./PromotionDialog";
+import AI_Options from "./AI_Options";
 
 ReactDOM.render(
     (
         <Provider store={store}>
             <PreLoadImages />
             <div className="row">
-
                 <div className="col">
                     <Board />
                 </div>
                 <div className='col'>
                     <Buttons />
+                    <AI_Options />
                     <Message />
                     <Promotion />
                 </div>

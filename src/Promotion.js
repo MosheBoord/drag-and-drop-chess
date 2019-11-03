@@ -35,15 +35,15 @@ class Promotion extends React.Component {
         return (
             <div className='messageContainer'>
                 <h3 className="header">Choose a Promotion</h3>
-                    <div className='input-field'>
-                        <select id='selectPromotion' name='selected' onChange={this.updateState}>
-                            <option className="dropdown-content" value="q">queen</option>
-                            <option className="dropdown-content" value="n">knight</option>
-                            <option className="dropdown-content" value="b">bishop</option>
-                            <option className="dropdown-content" value="r">rook</option>
-                        </select>
-                    </div>
-                    <button onClick={this.submit}>Submit</button>
+                <div className='input-field'>
+                    <select className='selectOption' name='selected' onChange={this.updateState}>
+                        <option className="dropdown-content" value="q">queen</option>
+                        <option className="dropdown-content" value="n">knight</option>
+                        <option className="dropdown-content" value="b">bishop</option>
+                        <option className="dropdown-content" value="r">rook</option>
+                    </select>
+                </div>
+                <button onClick={this.submit}>Submit</button>
             </div>
         );
     }
